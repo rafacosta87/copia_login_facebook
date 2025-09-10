@@ -1,0 +1,84 @@
+/*o que esta fazendo a linha 63*/
+/*e as linhas 53 e 54 do Rodape.tsx*/
+#main {
+    padding-top: 15px;
+    font-size: 12px;
+
+    display: flex;
+    justify-content: center;
+       
+}
+
+#conteudo {
+    color: #737373;
+    max-width: 980px; 
+    width: 100%;                          
+    margin-left: 40px;
+    margin-right: 40px;
+    padding-bottom: 20px;
+    box-sizing: border-box;    
+}
+
+.primeiraLista {
+    padding-top: 0px;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    list-style-type: none;
+    padding-left: 0;
+    column-gap: 10px;
+    padding-bottom: 0;
+    margin-bottom: 8px;
+}
+
+.linksListaUm {
+    font-size: 12px;
+    border-width: 0 0 0 1px;
+    display: inline-block;
+    font-weight: 400;
+    color: #8a8d91;
+}
+
+#borda {
+    border-bottom: 1px solid #dddfe2;
+    font-size: 1px;
+    height: 0px;
+    margin-bottom: 8px;
+}
+
+#containerListaDois {
+    
+}
+
+.segundaLista {    
+    column-gap: 20px;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    list-style-type: none;
+    line-height: 1.6;
+    padding-left: 0;
+    color: #8a8d91;    
+}
+
+.linksListaDois {
+    font-size: 12px;
+    vertical-align: top;
+    display: inline-block;
+    font-weight: 400;
+}
+
+#buttonMais {
+    color: #676e7d;
+    border: solid 1px #ccd0d5;
+    background-color: #f5f6f7;
+    border-radius: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3px 6px;
+}
+
+#buttonMais:hover {
+    background-color: #ebedf0;    
+}

@@ -1,0 +1,81 @@
+#modalBackground {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.5);
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#modalContedo {
+    display: flex;
+    flex-direction: column;
+    width: 785px;
+}
+#modalCabecalho {
+    padding: 6px 10px 5px 10px ;
+    width: 785px;
+    color: white;
+    background-color: #6d84b4;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    line-height: 24px;
+    
+}
+
+#modalRodape {
+    background-color: #f2f2f2;
+    width: 785px;
+    padding: 10px;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+#modalRodape button {
+    background-color: #4267b2;
+    color: white;
+    border: 1px solid #4267b2;
+    font-size: 12px;
+    padding: 0px 6px;
+    line-height: 26px;
+    font-weight: 700;
+}
+
+#modalRodape button:hover {
+    background-color: #365899;
+    cursor: pointer;
+}
+
+#modalCentro {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+#modalCentro p{
+    color: #385898;
+    font-size: 15px;
+    padding: 0;
+    margin: 0;
+}
+#idiomasSugeridos {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border-bottom: dashed 1px #ccd0d5 ;
+}
+
+#idiomasSugeridos * {
+    width: 100%;
+}
+
+#modalCentro span {
+    color: #90949c;
+    font-size: 12px;
+}
+
+
