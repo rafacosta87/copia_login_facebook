@@ -19,7 +19,7 @@ function Conteudo() {
                         <input type="password" className="inputText" name="pass" id="pass" placeholder="Senha" aria-label="Senha" />
                         <button className="buttonEntrar" type="submit">Entrar</button>
                         <a className="novaSenha" href="">Esqueceu a senha?</a>
-                        <hr />
+                        <hr id="borderTopButton" />
                         <button className="buttonConta" type="submit">Criar nova conta</button>
                     </div>
                     <div id="msgContainer"> <a href="/pages/create/?ref_type=registration_form">Crie uma Página </a>para uma celebridade, uma marca ou uma empresa.</div>

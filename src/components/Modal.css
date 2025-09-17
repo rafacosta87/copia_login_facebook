@@ -1,7 +1,7 @@
 #modalBackground {
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     position: absolute;
     top: 0;
     left: 0;
@@ -9,13 +9,16 @@
     justify-content: center;
     align-items: center;
 }
-#modalContedo {
+
+#modalConteudo {
     display: flex;
     flex-direction: column;
     width: 785px;
+    box-sizing: border-box;
 }
+
 #modalCabecalho {
-    padding: 6px 10px 5px 10px ;
+    padding: 6px 10px 4px 10px;
     width: 785px;
     color: white;
     background-color: #6d84b4;
@@ -23,7 +26,10 @@
     display: flex;
     align-items: center;
     line-height: 24px;
-    
+    font-weight: 700;
+    box-sizing: border-box;
+    border: 1px solid #555;
+    border-bottom: 0;
 }
 
 #modalRodape {
@@ -33,6 +39,9 @@
     display: flex;
     justify-content: end;
     align-items: center;
+    box-sizing: border-box;
+    border: 1px solid #555;
+    border-top: 0;
 }
 
 #modalRodape button {
@@ -49,33 +58,136 @@
     background-color: #365899;
     cursor: pointer;
 }
+#bordaTopRodape {
+    border-top: 1px solid #ccc;
+    width: 783px;
+    margin-left: 1px;
+}
 
 #modalCentro {
     background-color: white;
     display: flex;
     flex-direction: column;
     padding: 10px;
-}
-#modalCentro p{
-    color: #385898;
-    font-size: 15px;
-    padding: 0;
-    margin: 0;
-}
-#idiomasSugeridos {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    border-bottom: dashed 1px #ccd0d5 ;
+    border-color: #555;
+    border-style: solid;
+    border-width: 0 1px;
+    height: 760px;
+    /*borda apenas nas laterais*/
 }
 
-#idiomasSugeridos * {
+#idiomasSugeridos {
+    color: #385898;
+    font-size: 15px;
+    display: flex;
     width: 100%;
+    border-bottom: dashed 1px #ccd0d5;
+    padding-bottom: 15px;
+    padding-top: 5px;
+    margin-bottom: 10px;
+}
+
+#containerIdiomasSugeridos {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+#idiomaSugerido {
+    width: 25%;
+}
+#idiomaSugerido:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+div#idiomaSugeridoSelecionado {
+    color: #333;
+    font-weight: 700;
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+}
+
+div#idiomaSugeridoSelecionado:hover {
+    text-decoration: none;
+    cursor: default;
+}
+
+#checkIdiomaSelecionado {
+    font-size: 15px;
 }
 
 #modalCentro span {
+    padding-top:3px;
     color: #90949c;
+    font-size: 12px;
+    width: 203px
+}
+
+#todosIdiomas {
+    float: left;
     font-size: 12px;
 }
 
+#todosIdiomas ul {
+    list-style-type: none;
+    margin-left: 0;
+    padding-left: 0;
+    width: 160px;
+    margin-top: 0;
+}
 
+a.listaContinentes {
+    line-height: 2.30;
+    font-weight: 400;
+    color: rgb(144, 148, 156);
+}
+
+.categoriaSelecionada {
+    font-weight: 700;
+    color: #333;
+    line-height: 2.30;
+    text-decoration: underline;
+}
+/*o que faz as 2 configurações abaixo?*/
+#tabela {
+    /* table-layout: fixed; */
+    border: 0px;
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 12px;
+}
+
+td.colunaTabela {
+    width: 25%;
+}
+
+ul.dadosTabela {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+
+#containerIdiomas {
+    max-width: 785px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+a.listaPaises {
+    color: rgb(54, 88, 153);
+    font-weight: 400;
+    line-height: 2.05;
+    cursor: pointer;
+}
+
+.idiomaSelecionado {
+    font-weight: bold;
+    color: #333;
+}
+
+.idiomaSelecionado:hover {
+    text-decoration: none;
+    cursor: default;
+}

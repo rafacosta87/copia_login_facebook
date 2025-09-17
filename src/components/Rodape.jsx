@@ -13,9 +13,7 @@ const [openModal, setOpenModal] = useState(false)
             <div id="main">
                 {
                     openModal &&
-                <Modal onClose={() => setOpenModal(false)}>
-                    Olá Mundo
-                </Modal>
+                <Modal onClose={() => setOpenModal(false)}/>
                 }
                 <div id="conteudo" >
                     <ul className="primeiraLista" data-nocookies="1">
@@ -71,6 +69,7 @@ const [openModal, setOpenModal] = useState(false)
                             {/*<li><a accesskey="7" className="accessible_elem" href="/allactivity?privacy_source=activity_log_top_menu" title="Ver registro de atividades">Registro de atividades</a></li>*/}
                         </ul>
                     </div>
+                    
                     <div className="mvl copyright">
                         <div>
                             <span> Meta © 2025</span>

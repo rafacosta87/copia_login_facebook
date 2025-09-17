@@ -31,7 +31,7 @@
         flex-direction: column;
     }
 
-    h2 {
+    #containerLogo h2 {
         text-align: center;
     }
 
@@ -50,7 +50,7 @@
     justify-content: center;
 }
 
-h2 {
+#containerLogo h2 {
     font-size: 28px;
     font-weight: 400;
     width: 500px;
@@ -60,7 +60,7 @@ h2 {
 }
 
 @media (max-width: 1076px) {
-    h2 {
+    #containerLogo h2  {
         font-size: 24px;
         width: 368px;
     }
@@ -95,9 +95,7 @@ h2 {
     text-align: center;
 }
 
-a {
-    cursor: pointer;
-    text-decoration: none;
+#msgContainer a {
     color: inherit;
     font-size: 14px;
     font-weight: 600;
@@ -107,14 +105,12 @@ a.novaSenha {
     color: #0866ff;
     font-weight: 500;
     margin-bottom: -2px;
+    font-size: 14px;
+    font-weight: 600;
 
 }
 
-a:hover {
-    text-decoration: underline;
-}
-
-.inputText {
+input.inputText {
     font-size: 18px;
     padding: 14px 16px;
     width: 330px;
@@ -131,7 +127,7 @@ a:hover {
 }
 
 
-.buttonEntrar {
+button.buttonEntrar {
     background-color: #0866ff;
     border: none;
     border-radius: 6px;
@@ -151,11 +147,11 @@ a:hover {
     /*position: relative;*/
 }
 
-.buttonEntrar:hover {
+button.buttonEntrar:hover {
     background-color: #166fe5;
 }
 
-hr {
+#borderTopButton {
     width: 364px;
     align-items: center;
     border: none;
@@ -164,7 +160,7 @@ hr {
 
 }
 
-.buttonConta {
+button.buttonConta {
     border: none;
     border-radius: 6px;
     font-size: 17px;
@@ -181,7 +177,7 @@ hr {
     margin-top: 3px;
 }
 
-.buttonConta:hover {
+button.buttonConta:hover {
     background-color: #36a420;
     border-color: #36a420;
 }
