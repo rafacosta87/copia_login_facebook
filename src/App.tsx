@@ -1,15 +1,18 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import Conteudo from './components/Conteudo'
-import { useState } from 'react'
-import Rodape from './components/Rodape'
+
+import Conteudo from './components/Conteudo.tsx'
+
+import Rodape from './components/Rodape.tsx'
+import IdiomaProvedor from './components/IdiomaProvedor'
 
 function App() {
 
 
   return (
     <>
-      <Conteudo />
-      <Rodape />
+      <IdiomaProvedor>
+        <Conteudo />
+        <Rodape />
+      </IdiomaProvedor>
     </>
   )
 }

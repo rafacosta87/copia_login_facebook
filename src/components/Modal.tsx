@@ -1,12 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/*função 594 a 512 confirmar se é isso que entendemos. Primeira parte ele esta mapeando length 4 , onde esse id que esta em map , ira contar de 0 a 3 , esse id sera passado na linha 500, onde idiomas.slice pegara id(0) idiomas.length dividido por 4 até id(1) idiomas.length dividido por 4. Ai depois repete a operação, id(1) idiomas.length dividido por 4 até id(2) idiomas.length dividido por 4. Array.from fara esse loop até chegar em length: 4(l 496) ou seja id= 3, fatiando o array em quatro colunas iguais, essas colunas serão impressas no return(l 504)*/
-/*qual é o papel de "idiomasSugeridos${idx}" dentro da função linha 499, elle é a segunda condição */
-/*função  idiomasFiltrados, perguntar como reconhece que a string "Todos os idiomas" é a que contém todos idiomas. E o uso do include é pq cateforia é um array, caso contrario não precisaria dela(include)*/
-/*qual utilidade da div que esta envolvendo a tag "a", na função que coloca os idiomas nas colunas */
+/*Função 594 a 512 primeira parte ele esta mapeando length 4 , onde esse id que esta em map , ira contar de 0 a 3 , esse id sera passado na linha 500, onde idiomas.slice pegara id(0) idiomas.length dividido por 4 até id(1) idiomas.length dividido por 4. Ai depois repete a operação, id(1) idiomas.length dividido por 4 até id(2) idiomas.length dividido por 4. Array.from fara esse loop até chegar em length: 4(l 496) ou seja id= 3, fatiando o array em quatro colunas iguais, essas colunas serão impressas no return(l 504)*/
+/*Função useMemo, o uso do include é pq cateforia é um array, caso contrario não precisaria */
+/*pergunta na linha 568 */
+/*perguntar a questão do margin-rigth na tag span */
+/*o icone que não achamos do rodapé */
+/*tem pergunta no arquivo idiomaContexto */
+/*se vai fazer o loading ao abrir o modal */
 import { createPortal } from "react-dom"
 
 import "./Modal.css"
-import { useEffect, useMemo, useState } from "react"
+import { useContext, useEffect, useMemo, useState } from "react"
+import { IdiomaContexto } from "./IdiomaContexto"
 
 type ModalProps = {
     onClose: () => void
@@ -480,7 +484,9 @@ const idiomasSugeridos = [
 ]
 
 function Modal({ onClose }: ModalProps) {
-    const [idiomaSelecionado, setIdiomaSelecionado] = useState("Português (Brasil)")
+    const contexto = useContext(IdiomaContexto)
+    const idiomaSelecionado = contexto?.idiomaSelecionado                                                                                      //esse "?" é pq a variavel pode ser undefined
+    const setIdiomaSelecionado = contexto?.setIdiomaSelecionado
     const [categoriaSelecionada, setCategoriaSelecionada] = useState("Todos os idiomas")
 
     // const [idiomasFiltrados, setIdiomasFiltrados] = useState([])
@@ -506,11 +512,11 @@ function Modal({ onClose }: ModalProps) {
                             <span id="">Idiomas sugeridos</span>
                             <div id="containerIdiomasSugeridos">
                                 {idiomasSugeridos.map((idioma, idx) =>
-                                    <div id={idiomaSelecionado == idioma ? "idiomaSugeridoSelecionado" : `idiomaSugerido`} key={idx}
+                                    <div id={idiomaSelecionado == idioma ? "idiomaSugeridoSelecionado" : ""} className="idiomaSugerido" key={idx}
                                         onClick={
                                             () => {
-                                                
-                                                setIdiomaSelecionado(idioma)
+                                                if (setIdiomaSelecionado)                                                                       /*Aqui ś o equivalente, se setIdiomaSeeleciona receber valor executa o código abaixo, que é passar o valor para idiomaSelecionado. Em quais situações ele sera undefined? */
+                                                    setIdiomaSelecionado(idioma)
                                             }
                                         }
                                     >
@@ -549,6 +555,7 @@ function Modal({ onClose }: ModalProps) {
                                             return (
                                                 <td key={id} className="colunaTabela">
 
+
                                                     <ul className="dadosTabela">
                                                         {
                                                             idiomasFiltrados
@@ -557,24 +564,33 @@ function Modal({ onClose }: ModalProps) {
 
                                                                     return (
                                                                         <li key={`${(id + 1)}-${(idx + 1)}`}>
-                                                                            <div>
-                                                                                <a className={
-                                                                                    idiomaSelecionado == idioma.nome ? "idiomaSelecionado" : "listaPaises"
-                                                                                }
-                                                                                    onClick={(e) => {
-                                                                                        e.preventDefault()
+
+                                                                            <a className={
+                                                                                idiomaSelecionado == idioma.nome ? "idiomaSelecionado" : "listaPaises"
+                                                                            }
+                                                                                onClick={(e) => {
+                                                                                    e.preventDefault()
+                                                                                    if (setIdiomaSelecionado)
                                                                                         setIdiomaSelecionado(idioma.nome)
-                                                                                    }}
-                                                                                    href="#" role="button"
-                                                                                >
-                                                                                    {idioma.nome}
-                                                                                </a>
-                                                                            </div>
+                                                                                }}
+                                                                                href="#" role="button"
+                                                                            >
+                                                                                {idioma.nome}
+                                                                            </a>
+
                                                                         </li>
                                                                     )
                                                                 })
                                                         }
+                                                        {
+                                                            (idiomasFiltrados.length % 4 != 0 && id == 3) && <li>                                                   {/*Aqui é o seguinte caso a ultima coluna(coluna 4 que o id é 3) não tiver a mesma quantidade de idiomas que as outras , adicionara um caractere invisivel para deixar essa coluna alinhada ao topo igualmente as outras, se não fizer isso, ela ficara uma linha a baixo. A logica é a seguinte, são 4 colunas, se o numero de idiomas não for divisel po 4 , o resto sera diferente de zero na ultima coluna, ai adicionara um caractere invisivel nesta coluna*/}
+                                                                <a href="" className="listaPaises">
+                                                                    &#65279;
+                                                                </a>
+                                                            </li>
+                                                        }
                                                     </ul>
+
                                                 </td>
                                             )
                                         })

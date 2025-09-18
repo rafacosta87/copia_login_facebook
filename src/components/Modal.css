@@ -15,10 +15,11 @@
     flex-direction: column;
     width: 785px;
     box-sizing: border-box;
+    box-shadow: 0 2px 26px #0000004d,0 0 0 1px #0000001a;
 }
 
 #modalCabecalho {
-    padding: 6px 10px 4px 10px;
+    padding: 6px 10px 6px 10px;
     width: 785px;
     color: white;
     background-color: #6d84b4;
@@ -28,7 +29,7 @@
     line-height: 24px;
     font-weight: 700;
     box-sizing: border-box;
-    border: 1px solid #555;
+    border: 1px solid #365899;
     border-bottom: 0;
 }
 
@@ -72,7 +73,7 @@
     border-color: #555;
     border-style: solid;
     border-width: 0 1px;
-    height: 760px;
+    height: 755px;
     /*borda apenas nas laterais*/
 }
 
@@ -92,10 +93,10 @@
     display: flex;
     flex-direction: row;
 }
-#idiomaSugerido {
+.idiomaSugerido {
     width: 25%;
 }
-#idiomaSugerido:hover {
+.idiomaSugerido:hover {
     cursor: pointer;
     text-decoration: underline;
 }
@@ -160,6 +161,7 @@ a.listaContinentes {
 
 td.colunaTabela {
     width: 25%;
+
 }
 
 ul.dadosTabela {
@@ -174,20 +176,23 @@ ul.dadosTabela {
     width: 100%;
     display: flex;
     flex-direction: row;
+    align-items: start;
 }
 a.listaPaises {
     color: rgb(54, 88, 153);
     font-weight: 400;
-    line-height: 2.05;
+    line-height: 2.02;
     cursor: pointer;
 }
 
 .idiomaSelecionado {
     font-weight: bold;
     color: #333;
+    line-height: 2.02;
 }
 
 .idiomaSelecionado:hover {
     text-decoration: none;
     cursor: default;
 }
+

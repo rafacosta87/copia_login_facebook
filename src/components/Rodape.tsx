@@ -1,32 +1,52 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-//não consegui achar o icone
-import { useState } from "react"
+
+import { useContext, useState } from "react"
 import "./Rodape.css"
 import Modal from "./Modal"
+import { IdiomaContexto } from "./IdiomaContexto"
 
+const idiomasRodape = [
+    "Português (Brasil)",
+    "English (US)",
+    "Español",
+    "Français (France)",
+    "Italiano",
+    "Deutsch",
+    "العربية",
+    "हिन्दी",
+    "中文(简体)",
+    "日本語",
+]
 
 function Rodape() {
-const [openModal, setOpenModal] = useState(false)
+    const contexto = useContext(IdiomaContexto)
+    const [openModal, setOpenModal] = useState(false)
+    const idiomaSelecionado = contexto?.idiomaSelecionado                           //esse "?" é pq a variavel pode ser undefined
+    const setIdiomaSelecionado = contexto?.setIdiomaSelecionado
 
     return (
         <>
             <div id="main">
                 {
                     openModal &&
-                <Modal onClose={() => setOpenModal(false)}/>
+                    <Modal onClose={() => setOpenModal(false)} />
                 }
                 <div id="conteudo" >
                     <ul className="primeiraLista" data-nocookies="1">
-                        <li>Português (Brasil)</li>
-                        <li><a className="linksListaUm" href="https://www.facebook.com/?locale=pt_BR" title="English (US)" id="">English (US)</a></li>
-                        <li><a className="linksListaUm" href="https://www.facebook.com/?locale=en_US" title="Spanish" id="">Español</a></li>
-                        <li><a className="linksListaUm" href="https://es-la.facebook.com/?locale=es_LA" title="French (France)" id="">Français (France)</a></li>
-                        <li><a className="linksListaUm" href="https://fr-fr.facebook.com/?locale=fr_FR" title="Italian" id="">Italiano</a></li>
-                        <li><a className="linksListaUm" href="https://it-it.facebook.com/?locale=it_IT" title="German" id="">Deutsch</a></li>
-                        <li><a className="linksListaUm" href="https://de-de.facebook.com/?locale=de_DE" title="Arabic" id="">العربية</a></li>
-                        <li><a className="linksListaUm" href="https://ar-ar.facebook.com/?locale=ar_AR" title="Hindi" id="">हिन्दी</a></li>
-                        <li><a className="linksListaUm" href="https://hi-in.facebook.com/?locale=hi_IN" title="Simplified Chinese (China)" id="">中文(简体)</a></li>
-                        <li><a className="linksListaUm" href="https://zh-cn.facebook.com/?locale=zh_CN" title="Japanese" id="">日本語</a></li>
+
+                        {idiomasRodape.map((idioma, idx) => {
+                            return <li><a
+                                className="linksListaUm"
+                                title={idioma}
+                                id={idiomaSelecionado == idioma ? "idiomaRodapeSelecionado" : ""}
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    if (setIdiomaSelecionado)
+                                        setIdiomaSelecionado(idioma)
+                                }}
+                            >{idioma}</a>
+                            </li>
+                        })}
                         <li><a role="button" className="" rel="dialog" href="#" title="Mostrar mais idiomas" onClick={() => setOpenModal(true)}>
                             <i id="buttonMais" className="" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M5 12h14" />
@@ -69,7 +89,7 @@ const [openModal, setOpenModal] = useState(false)
                             {/*<li><a accesskey="7" className="accessible_elem" href="/allactivity?privacy_source=activity_log_top_menu" title="Ver registro de atividades">Registro de atividades</a></li>*/}
                         </ul>
                     </div>
-                    
+
                     <div className="mvl copyright">
                         <div>
                             <span> Meta © 2025</span>
