@@ -5,7 +5,7 @@
     margin-left: -26px
 }
 
-#containerMain {
+#containerConteudo {
     max-width: 100vw;
     background-color: #f2f4f7;
     display: flex;
@@ -106,36 +106,59 @@ a.novaSenha {
     font-weight: 500;
     margin-bottom: -2px;
     font-size: 14px;
-    font-weight: 600;
-
 }
 
-input.inputText {
+input.inputTextEmail {
     font-size: 18px;
     padding: 14px 16px;
     width: 330px;
     border-radius: 6px;
     background: #fff;
-    border: 1px solid #dddfe2;
-    color: #1d2129;
     height: 22px;
     margin-bottom: -3px;
     outline: none;
+    border: solid 1px #dddfe2;
 }
 
-input.inputText:focus {
+input.inputTextEmail:focus {
     border-color: #0866ff;
     box-shadow: 0 0 0 2px #e7f3ff;
     caret-color: #0866ff;
-   
+
 }
 
+input.inputText {
+    font-size: 18px;
+    outline: none;
+    border: none;
+    width: 100%;
+}
+
+#bordaInputPassword {
+    font-size: 18px;
+    padding: 14px 16px;
+    width: 330px;
+    border-radius: 6px;
+    background: #fff;
+    height: 22px;
+    margin-bottom: -3px;
+    border: solid 1px #dddfe2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#bordaInputPassword:focus {
+    border-color: #0866ff;
+    box-shadow: 0 0 0 2px #e7f3ff;
+    caret-color: #0866ff;
+}
 
 button.buttonEntrar {
     background-color: #0866ff;
     border: none;
     border-radius: 6px;
-    font-size: 20px;
+    font-size: 21px;
     line-height: 49px;
     padding: 0 16px;
     width: 365px;
@@ -157,13 +180,12 @@ button.buttonEntrar:hover {
     border: none;
     height: 1.25px;
     background-color: #DADDE1;
-
 }
 
 button.buttonConta {
+    font-size: 18px;
     border: none;
     border-radius: 6px;
-    font-size: 17px;
     line-height: 48px;
     padding: 0 16px;
     background-color: #42b72a;
@@ -173,9 +195,24 @@ button.buttonConta {
     text-align: center;
     cursor: pointer;
     margin-top: 3px;
+    box-sizing: content-box;
 }
 
 button.buttonConta:hover {
     background-color: #36a420;
     border-color: #36a420;
+}
+
+#iconeOlho {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 6px;
+    border-radius: 100%;
+    margin-right: -6px;
+}
+
+#iconeOlho:hover {
+    background-color: #f2f2f2;
+    cursor: pointer;
 }

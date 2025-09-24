@@ -1,18 +1,28 @@
+import PaginaLogin from './components/PaginaLogin.tsx'
+import PaginaCadastro from './components/PaginaCadastro'
 
-import Conteudo from './components/Conteudo.tsx'
-
-import Rodape from './components/Rodape.tsx'
 import IdiomaProvedor from './components/IdiomaProvedor'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 function App() {
 
 
   return (
     <>
-      <IdiomaProvedor>
-        <Conteudo />
-        <Rodape />
-      </IdiomaProvedor>
+      <Router>
+        <Routes>
+          <Route path='/' element={
+            <IdiomaProvedor>
+              <PaginaLogin />
+            </IdiomaProvedor>
+          } />
+          <Route path='/cadastro' element={
+            <IdiomaProvedor>
+              <PaginaCadastro />
+            </IdiomaProvedor>
+          } />
+        </Routes>
+      </Router>
     </>
   )
 }

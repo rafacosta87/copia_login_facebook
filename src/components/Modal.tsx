@@ -1,15 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /*Função 594 a 512 primeira parte ele esta mapeando length 4 , onde esse id que esta em map , ira contar de 0 a 3 , esse id sera passado na linha 500, onde idiomas.slice pegara id(0) idiomas.length dividido por 4 até id(1) idiomas.length dividido por 4. Ai depois repete a operação, id(1) idiomas.length dividido por 4 até id(2) idiomas.length dividido por 4. Array.from fara esse loop até chegar em length: 4(l 496) ou seja id= 3, fatiando o array em quatro colunas iguais, essas colunas serão impressas no return(l 504)*/
 /*Função useMemo, o uso do include é pq cateforia é um array, caso contrario não precisaria */
-/*pergunta na linha 568 */
-/*perguntar a questão do margin-rigth na tag span */
-/*o icone que não achamos do rodapé */
-/*tem pergunta no arquivo idiomaContexto */
-/*se vai fazer o loading ao abrir o modal */
+/*Pergunta na linha 518 . Perguntar a questão do margin-rigth na tag span. Tem pergunta no arquivo idiomaContexto.Se vai fazer o loading ao abrir o modal  */
+/* Vai implatar mais tipagens no projeto. Passar esses array de idiomas e cateorias para um arquivo . Passar focu para div password*/
+
 import { createPortal } from "react-dom"
 
 import "./Modal.css"
-import { useContext, useEffect, useMemo, useState } from "react"
+import { useContext, useMemo, useState } from "react"
 import { IdiomaContexto } from "./IdiomaContexto"
 
 type ModalProps = {

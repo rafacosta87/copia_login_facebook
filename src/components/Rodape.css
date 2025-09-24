@@ -3,17 +3,17 @@
     font-size: 12px;
     display: flex;
     justify-content: center;
-       
+
 }
 
 #conteudo {
     color: #737373;
-    max-width: 980px; 
-    width: 100%;                          
+    max-width: 980px;
+    width: 100%;
     margin-left: 40px;
     margin-right: 40px;
     padding-bottom: 20px;
-    box-sizing: border-box;    
+    box-sizing: border-box;
 }
 
 ul.primeiraLista {
@@ -43,18 +43,16 @@ a.linksListaUm {
     margin-bottom: 8px;
 }
 
-#containerListaDois {
-    
-}
+#containerListaDois {}
 
-ul.segundaLista {    
+ul.segundaLista {
     column-gap: 20px;
     align-items: center;
     display: flex;
     flex-wrap: wrap;
     list-style-type: none;
     line-height: 1.6;
-    padding-left: 0;  
+    padding-left: 0;
 }
 
 a.linksListaDois {
@@ -77,10 +75,18 @@ a.linksListaDois {
 }
 
 #buttonMais:hover {
-    background-color: #ebedf0;    
+    background-color: #ebedf0;
 }
-#idiomaRodapeSelecionado{
-text-decoration: none;
-font-weight: 700;
-cursor: default;
+
+#idiomaRodapeSelecionado {
+    text-decoration: none;
+    font-weight: 700;
+    cursor: default;
+}
+
+.iconePlay {
+    font-size: 20px;
+    align-self: flex-end;
+    color: #3b5998;
+    font-weight: bolder;
 }
