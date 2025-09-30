@@ -1,44 +1,64 @@
-import { useState } from 'react'
+//como estamos pegando o id na linha 42 , se "result" é igual a "reponse.json" , e "response" é os dados que mandamos(post) para o banco. E o id é criado no banco, como que estamos pegando esse id , se não fizemos um get no banco? 
+import { useState, useRef } from 'react'
 import './PaginaCadastro.css'
-import Rodape from './Rodape'
+import Rodape from '../components/Rodape'
+import LogoCabecalho from '../components/LogoCabecalho'
+import { Camera } from 'lucide-react'
 
-function PaginaCadastro() {
-
+function PaginaCadastro() {        
+    const inputFileRef = useRef<HTMLInputElement | undefined>(undefined)                                                                      //criando a referencia , para passar para o input(l 87), para que possamos executar a função carregaImagem
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [nome, setNome] = useState("")
     const [sobrenome, setSobrenome] = useState("")
-    const [dia, setDia] = useState("")
-    const [mes, setMes] = useState("")
-    const [ano, setAno] = useState("")
+    const [dia, setDia] = useState("1")
+    const [mes, setMes] = useState("1")
+    const [ano, setAno] = useState("2025")
     const [genero, setGenero] = useState("")
+    const [imagem, setImagem] = useState<string | null>(null)
 
-
-    function requestCadastro(e) {
+    async function requestCadastro(e) {
         e.preventDefault()
-        fetch("http://localhost:3000/usuario", {
+        const response = await fetch("http://localhost:3000/usuario", {                                                                        //aqui estamos passando dados para nosso backend, metodo post. No headers o tipo de conteuudo sera aplication/json. Mas abaixo estamos passando na requisição body os dados. Primeiramente passamos o nome da variavel como definimos no backend e a frente passamos o nome que definimos aqui(frontend). Para que o valor chegue na variavel respectiva do backend
             method: "post",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ "email": email, "senha": password, "nome": nome, "sobrenome": sobrenome, "genero": genero, "data-nascimento": `${dia}/${mes}/${ano}` })
+            body: JSON.stringify(
+                {
+                    "email": email,
+                    "senha": password,
+                    "nome": nome,
+                    "sobrenome": sobrenome,
+                    "genero": genero,
+                    "data_nascimento": `${dia}/${mes}/${ano}`,
+                    "imagem": imagem
+                })
 
-        }).then(response => {
-            if (response.status == 200) {
-                console.log("sucesso")
-            }
-            else console.log("falha")
         })
+        console.log(response)
+        if (!response.ok) {
+            console.error("Erro na requisição")
+        }
+        window.location.href = "/"                                                                                              //direcionando para a pagina logado, ao final da função , se tudo der certo , passando o id na url
     }
-    console.log(genero)
-    console.log(nome)
-    console.log(sobrenome)
-    console.log(dia, mes, ano, email, password)
+
+    function carregaImagem(e) {                                                                                                                  //função de carregamento da imagem , usamos essa mesma função no projeto google, na parte do cabeçalho
+        const arquivoImagem = e.target.files[0]
+        if (!arquivoImagem) {
+            return
+        }
+        const reader = new FileReader()
+        reader.readAsDataURL(arquivoImagem)
+        reader.onload = () => {
+            setImagem(reader.result as string)
+        }
+
+    }
+
     return (
         <div>
 
             <div id="containerPrincipalCadastro">
-                <div id="containerCabecalho">
-                    <img id="cabecalhoLogo" src="https://static.xx.fbcdn.net/rsrc.php/y1/r/4lCu2zih0ca.svg" alt="Facebook"></img>
-                </div>
+                <LogoCabecalho />
                 <div id="containerCadastro">
                     <div id="cabecalhoCadastro">
                         <div id='tituloCadastro'>Criar uma nova conta</div>
@@ -60,6 +80,10 @@ function PaginaCadastro() {
                                     placeholder='Sobrenome'
                                     value={sobrenome}
                                     onChange={e => setSobrenome(e.target.value)} />
+                                <div id='iconeCamera' title='Adicionar foto de Perfil' onClick={() => inputFileRef.current?.click()}>
+                                    <input type="file" hidden ref={inputFileRef} accept='image/*' onChange={carregaImagem} />
+                                    {imagem ? <img id="imagemCadastro" src={imagem} /> : <Camera />}
+                                </div>
                             </div>
                             <div id='containerPrincipalData'>
                                 <div id='tituloData'>Data de nascimento

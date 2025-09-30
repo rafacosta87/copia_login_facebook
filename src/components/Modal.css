@@ -8,6 +8,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 2;
 }
 
 #modalConteudo {
@@ -15,7 +16,8 @@
     flex-direction: column;
     width: 785px;
     box-sizing: border-box;
-    box-shadow: 0 2px 26px #0000004d,0 0 0 1px #0000001a;
+    box-shadow: 0 2px 26px #0000004d, 0 0 0 1px #0000001a;
+
 }
 
 #modalCabecalho {
@@ -59,6 +61,7 @@
     background-color: #365899;
     cursor: pointer;
 }
+
 #bordaTopRodape {
     border-top: 1px solid #ccc;
     width: 783px;
@@ -93,9 +96,11 @@
     display: flex;
     flex-direction: row;
 }
+
 .idiomaSugerido {
     width: 25%;
 }
+
 .idiomaSugerido:hover {
     cursor: pointer;
     text-decoration: underline;
@@ -119,7 +124,7 @@ div#idiomaSugeridoSelecionado:hover {
 }
 
 #modalCentro span {
-    padding-top:3px;
+    padding-top: 3px;
     color: #90949c;
     font-size: 12px;
     width: 203px
@@ -150,6 +155,7 @@ a.listaContinentes {
     line-height: 2.30;
     text-decoration: underline;
 }
+
 /*o que faz as 2 configurações abaixo?*/
 #tabela {
     /* table-layout: fixed; */
@@ -178,6 +184,7 @@ ul.dadosTabela {
     flex-direction: row;
     align-items: start;
 }
+
 a.listaPaises {
     color: rgb(54, 88, 153);
     font-weight: 400;
@@ -195,4 +202,3 @@ a.listaPaises {
     text-decoration: none;
     cursor: default;
 }
-
