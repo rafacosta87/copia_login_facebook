@@ -20,6 +20,15 @@
 
 }
 
+#carregamentoModal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    font-weight: 700;
+    color: white;
+}
+
 #modalCabecalho {
     padding: 6px 10px 6px 10px;
     width: 785px;

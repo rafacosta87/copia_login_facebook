@@ -6,7 +6,7 @@
 import { createPortal } from "react-dom"
 
 import "./Modal.css"
-import { useContext, useMemo, useState } from "react"
+import { useContext, useEffect, useMemo, useState } from "react"
 import { IdiomaContexto } from "./IdiomaContexto"
 
 type ModalProps = {
@@ -484,7 +484,9 @@ function Modal({ onClose }: ModalProps) {
     const contexto = useContext(IdiomaContexto)
     const idiomaSelecionado = contexto?.idiomaSelecionado                                                                                      //esse "?" é pq a variavel pode ser undefined
     const setIdiomaSelecionado = contexto?.setIdiomaSelecionado
+    const [carregando, setCarregando] = useState(true)
     const [categoriaSelecionada, setCategoriaSelecionada] = useState("Todos os idiomas")
+
 
     // const [idiomasFiltrados, setIdiomasFiltrados] = useState([])
     // useEffect(() => {
@@ -497,103 +499,117 @@ function Modal({ onClose }: ModalProps) {
     }, [categoriaSelecionada]
     )
 
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setCarregando(false)
+        }, 2000)
+        return () => {
+            clearTimeout(timeout)
+        }
+    }, [])
+
     return (
         createPortal(
             <div id="modalBackground">
+                    {
+                        carregando?
+                    <p id="carregamentoModal">Loading...</p>
+                    :
+                    <>
                 <div id="modalConteudo">
-                    <div id="modalCabecalho">
-                        <div id="">Selecione seu idioma</div>
-                    </div>
-                    <div id="modalCentro">
-                        <div id="idiomasSugeridos">
-                            <span id="">Idiomas sugeridos</span>
-                            <div id="containerIdiomasSugeridos">
-                                {idiomasSugeridos.map((idioma, idx) =>
-                                    <div id={idiomaSelecionado == idioma ? "idiomaSugeridoSelecionado" : ""} className="idiomaSugerido" key={idx}
-                                        onClick={
-                                            () => {
-                                                if (setIdiomaSelecionado)                                                                       /*Aqui ś o equivalente, se setIdiomaSeeleciona receber valor executa o código abaixo, que é passar o valor para idiomaSelecionado. Em quais situações ele sera undefined? */
-                                                    setIdiomaSelecionado(idioma)
-                                            }
-                                        }
-                                    >
-                                        {idioma}
-                                        {idioma == idiomaSelecionado && <b id="checkIdiomaSelecionado"> ✓ </b>}                                 {/*passara esse icone para o idioma selecionado */}
-                                    </div>
-                                )}
-                            </div>
+                        <div id="modalCabecalho">
+                            <div id="">Selecione seu idioma</div>
                         </div>
-                        <div id="containerIdiomas">
-                            <div id="todosIdiomas">
-                                <ul id="">
-                                    {categorias.map(
-                                        (categoria, idx) =>
-                                            <li key={idx} className="">
-                                                <a
-                                                    onClick={
-                                                        (e) => {
-                                                            e.preventDefault()                                                                  /*é para evitar o evento padrão, por ser uma tag a , ao click ela atualiza pagina, e não queremos isso  */
-                                                            setCategoriaSelecionada(categoria)
-                                                        }
-                                                    }
-                                                    className={categoriaSelecionada == categoria ? "categoriaSelecionada " : "listaContinentes"}
-                                                    href="#"
-                                                    role="button" >
-                                                    {categoria}
-                                                </a>
-                                            </li>
+                        <div id="modalCentro">
+                            <div id="idiomasSugeridos">
+                                <span id="">Idiomas sugeridos</span>
+                                <div id="containerIdiomasSugeridos">
+                                    {idiomasSugeridos.map((idioma, idx) =>
+                                        <div id={idiomaSelecionado == idioma ? "idiomaSugeridoSelecionado" : ""} className="idiomaSugerido" key={idx}
+                                            onClick={
+                                                () => {
+                                                    if (setIdiomaSelecionado)                                                                       /*Aqui ś o equivalente, se setIdiomaSeeleciona receber valor executa o código abaixo, que é passar o valor para idiomaSelecionado. Em quais situações ele sera undefined? */
+                                                        setIdiomaSelecionado(idioma)
+                                                }
+                                            }
+                                        >
+                                            {idioma}
+                                            {idioma == idiomaSelecionado && <b id="checkIdiomaSelecionado"> ✓ </b>}                                 {/*passara esse icone para o idioma selecionado */}
+                                        </div>
                                     )}
-                                </ul>
+                                </div>
                             </div>
-                            <table id="tabela"  >
-                                <tr className="containerColunas">
-                                    {
-                                        Array.from({ length: 4 }, (_, i) => i).map((id) => {
-                                            return (
-                                                <td key={id} className="colunaTabela">
-
-
-                                                    <ul className="dadosTabela">
-                                                        {
-                                                            idiomasFiltrados
-                                                                .slice(id * Math.round(idiomasFiltrados.length / 4), (id + 1) * Math.round(idiomasFiltrados.length / 4))
-                                                                .map((idioma, idx) => {
-
-                                                                    return (
-                                                                        <li key={`${(id + 1)}-${(idx + 1)}`}>
-
-                                                                            <a className={
-                                                                                idiomaSelecionado == idioma.nome ? "idiomaSelecionado" : "listaPaises"
-                                                                            }
-                                                                                onClick={(e) => {
-                                                                                    e.preventDefault()
-                                                                                    if (setIdiomaSelecionado)
-                                                                                        setIdiomaSelecionado(idioma.nome)
-                                                                                }}
-                                                                                href="#" role="button"
-                                                                            >
-                                                                                {idioma.nome}
-                                                                            </a>
-
-                                                                        </li>
-                                                                    )
-                                                                })
+                            <div id="containerIdiomas">
+                                <div id="todosIdiomas">
+                                    <ul id="">
+                                        {categorias.map(
+                                            (categoria, idx) =>
+                                                <li key={idx} className="">
+                                                    <a
+                                                        onClick={
+                                                            (e) => {
+                                                                e.preventDefault()                                                                  /*é para evitar o evento padrão, por ser uma tag a , ao click ela atualiza pagina, e não queremos isso  */
+                                                                setCategoriaSelecionada(categoria)
+                                                            }
                                                         }
-                                                        {
-                                                            (idiomasFiltrados.length % 4 != 0 && id == 3) && <li>                                                   {/*Aqui é o seguinte caso a ultima coluna(coluna 4 que o id é 3) não tiver a mesma quantidade de idiomas que as outras , adicionara um caractere invisivel para deixar essa coluna alinhada ao topo igualmente as outras, se não fizer isso, ela ficara uma linha a baixo. A logica é a seguinte, são 4 colunas, se o numero de idiomas não for divisel po 4 , o resto sera diferente de zero na ultima coluna, ai adicionara um caractere invisivel nesta coluna*/}
-                                                                <a href="" className="listaPaises">
-                                                                    &#65279;
-                                                                </a>
-                                                            </li>
-                                                        }
-                                                    </ul>
+                                                        className={categoriaSelecionada == categoria ? "categoriaSelecionada " : "listaContinentes"}
+                                                        href="#"
+                                                        role="button" >
+                                                        {categoria}
+                                                    </a>
+                                                </li>
+                                        )}
+                                    </ul>
+                                </div>
+                                <table id="tabela"  >
+                                    <tr className="containerColunas">
+                                        {
+                                            Array.from({ length: 4 }, (_, i) => i).map((id) => {
+                                                return (
+                                                    <td key={id} className="colunaTabela">
 
-                                                </td>
-                                            )
-                                        })
-                                    }
-                                </tr>
-                                {/* <tr className="containerColunas">
+
+                                                        <ul className="dadosTabela">
+                                                            {
+                                                                idiomasFiltrados
+                                                                    .slice(id * Math.round(idiomasFiltrados.length / 4), (id + 1) * Math.round(idiomasFiltrados.length / 4))
+                                                                    .map((idioma, idx) => {
+
+                                                                        return (
+                                                                            <li key={`${(id + 1)}-${(idx + 1)}`}>
+
+                                                                                <a className={
+                                                                                    idiomaSelecionado == idioma.nome ? "idiomaSelecionado" : "listaPaises"
+                                                                                }
+                                                                                    onClick={(e) => {
+                                                                                        e.preventDefault()
+                                                                                        if (setIdiomaSelecionado)
+                                                                                            setIdiomaSelecionado(idioma.nome)
+                                                                                    }}
+                                                                                    href="#" role="button"
+                                                                                >
+                                                                                    {idioma.nome}
+                                                                                </a>
+
+                                                                            </li>
+                                                                        )
+                                                                    })
+                                                            }
+                                                            {
+                                                                (idiomasFiltrados.length % 4 != 0 && id == 3) && <li>                                                   {/*Aqui é o seguinte caso a ultima coluna(coluna 4 que o id é 3) não tiver a mesma quantidade de idiomas que as outras , adicionara um caractere invisivel para deixar essa coluna alinhada ao topo igualmente as outras, se não fizer isso, ela ficara uma linha a baixo. A logica é a seguinte, são 4 colunas, se o numero de idiomas não for divisel po 4 , o resto sera diferente de zero na ultima coluna, ai adicionara um caractere invisivel nesta coluna*/}
+                                                                    <a href="" className="listaPaises">
+                                                                        &#65279;
+                                                                    </a>
+                                                                </li>
+                                                            }
+                                                        </ul>
+
+                                                    </td>
+                                                )
+                                            })
+                                        }
+                                    </tr>
+                                    {/* <tr className="containerColunas">
                                     <td className="colunaTabela">
 
                                         <ul className="dadosTabela">
@@ -647,16 +663,18 @@ function Modal({ onClose }: ModalProps) {
                                         </ul>
                                     </td>
                                 </tr> */}
-                            </table>
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                    <div id="bordaTopRodape">
-                    </div>
-                    <div id="modalRodape">
-                        <button onClick={onClose}>Fechar</button>
-                    </div>
+                        <div id="bordaTopRodape">
+                        </div>
+                        <div id="modalRodape">
+                            <button onClick={onClose}>Fechar</button>
+                        </div>
 
                 </div>
+                    </>
+                    }
             </div >
             , document.body
         )

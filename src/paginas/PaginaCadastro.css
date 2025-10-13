@@ -9,7 +9,7 @@
 }
 
 #containerCadastro {
-    box-shadow: 0 2px 4px #0000001a,0 8px 16px #0000001a;
+    box-shadow: 0 2px 4px #0000001a, 0 8px 16px #0000001a;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -37,7 +37,7 @@
 }
 
 
-#linhaDivisoria{
+#linhaDivisoria {
     border: none;
     height: 1px;
     width: 432px;
@@ -45,8 +45,19 @@
     margin-bottom: 17px;
 }
 
-#formulario{
+#formulario {
     padding: 0 16px;
+}
+
+div.inputEError {
+    display: flex;
+    flex-direction: column;
+}
+
+span.mensagemError{
+    position: absolute;
+    color: red;
+    margin-top: 45px;
 }
 
 #cadastroNome {
@@ -69,10 +80,11 @@ input.inputCadastroNome {
     color: #1c1e21;
 }
 
-#iconeCamera{
+#iconeCamera {
     cursor: pointer;
 }
-#imagemCadastro{
+
+#imagemCadastro {
     height: 40px;
     width: 40px;
     border-radius: 100%;
@@ -162,7 +174,7 @@ input.radio {
 #containerEmailESenha {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 17px;
     margin-bottom: 20px;
 }
 

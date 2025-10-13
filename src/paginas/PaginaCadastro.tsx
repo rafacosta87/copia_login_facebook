@@ -5,7 +5,25 @@ import Rodape from '../components/Rodape'
 import LogoCabecalho from '../components/LogoCabecalho'
 import { Camera } from 'lucide-react'
 
-function PaginaCadastro() {        
+interface Erros {
+    error: Dados;
+}
+
+interface Dados {
+    nome: Erro
+    sobrenome: Erro
+    email: Erro
+    genero: Erro
+    imagem?: Erro
+    data_nascimento: Erro
+    senha: Erro
+}
+
+interface Erro {
+    _errors: number[]
+}
+
+function PaginaCadastro() {
     const inputFileRef = useRef<HTMLInputElement | undefined>(undefined)                                                                      //criando a referencia , para passar para o input(l 87), para que possamos executar a função carregaImagem
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -16,6 +34,7 @@ function PaginaCadastro() {
     const [ano, setAno] = useState("2025")
     const [genero, setGenero] = useState("")
     const [imagem, setImagem] = useState<string | null>(null)
+    const [erros, setErros] = useState<Erros | undefined>()
 
     async function requestCadastro(e) {
         e.preventDefault()
@@ -32,16 +51,16 @@ function PaginaCadastro() {
                     "data_nascimento": `${dia}/${mes}/${ano}`,
                     "imagem": imagem
                 })
-
         })
-        console.log(response)
         if (!response.ok) {
-            console.error("Erro na requisição")
+            const json = await response.json()
+            setErros(json)
+            return
         }
-        window.location.href = "/"                                                                                              //direcionando para a pagina logado, ao final da função , se tudo der certo , passando o id na url
+        window.location.href = "/"                                                                                                              //direcionando para a pagina logado, ao final da função , se tudo der certo , passando o id na url
     }
 
-    function carregaImagem(e) {                                                                                                                  //função de carregamento da imagem , usamos essa mesma função no projeto google, na parte do cabeçalho
+    function carregaImagem(e) {                                                                                                                 //função de carregamento da imagem , usamos essa mesma função no projeto google, na parte do cabeçalho
         const arquivoImagem = e.target.files[0]
         if (!arquivoImagem) {
             return
@@ -51,7 +70,6 @@ function PaginaCadastro() {
         reader.onload = () => {
             setImagem(reader.result as string)
         }
-
     }
 
     return (
@@ -68,18 +86,30 @@ function PaginaCadastro() {
                         </div>
                         <form id="formulario" action="">
                             <div id='cadastroNome'>
-                                <input
-                                    className="inputCadastroNome"
-                                    type="text"
-                                    placeholder='Nome'
-                                    value={nome}
-                                    onChange={e => setNome(e.target.value)} />
-                                <input
-                                    className="inputCadastroNome"
-                                    type="text"
-                                    placeholder='Sobrenome'
-                                    value={sobrenome}
-                                    onChange={e => setSobrenome(e.target.value)} />
+                                <div className='inputEError'>
+                                    <input
+                                        className="inputCadastroNome"
+                                        type="text"
+                                        placeholder='Nome'
+                                        value={nome}
+                                        onChange={e => setNome(e.target.value)} />
+                                    {erros?.error.nome &&
+                                        <span className='mensagemError'>{erros.error.nome._errors[0]}</span>
+                                    }
+                                </div>
+                                <div>
+                                    <div className='inputEError'>
+                                        <input
+                                            className="inputCadastroNome"
+                                            type="text"
+                                            placeholder='Sobrenome'
+                                            value={sobrenome}
+                                            onChange={e => setSobrenome(e.target.value)} />
+                                        {erros?.error.sobrenome &&
+                                            <span className='mensagemError'>{erros.error.sobrenome._errors[0]}</span>
+                                        }
+                                    </div>
+                                </div>
                                 <div id='iconeCamera' title='Adicionar foto de Perfil' onClick={() => inputFileRef.current?.click()}>
                                     <input type="file" hidden ref={inputFileRef} accept='image/*' onChange={carregaImagem} />
                                     {imagem ? <img id="imagemCadastro" src={imagem} /> : <Camera />}
@@ -267,6 +297,9 @@ function PaginaCadastro() {
                                         </select>
                                     </span>
                                 </div>
+                                {erros?.error.sobrenome &&
+                                            <span style={{color: "red"}}>{erros.error.sobrenome._errors[0]}</span>
+                                        }
                                 <div id="containerPrincipalGenero">
                                     <div id="tituloGenero">Gênero
                                         <a title="Clique para obter mais informações" href="#" role="button">
@@ -291,14 +324,27 @@ function PaginaCadastro() {
                                             </label>
                                         </span>
                                     </span>
+                                    {erros?.error.genero &&
+                                        <span style={{color: "red"}}>{erros.error.genero._errors[0]}</span>
+                                    }
                                 </div>
                                 <div id='containerEmailESenha'>
+                                    <div className='inputEError'>
                                     <input className="inputEmailESenha" type="text" placeholder='Celular ou email'
                                         value={email}
                                         onChange={e => setEmail(e.target.value)} />
+                                    {erros?.error.email &&
+                                        <span className='mensagemError'>{erros.error.email._errors[0]}</span>
+                                    }
+                                    </div>
+                                    <div className='inputEError'>
                                     <input className="inputEmailESenha" type="text" placeholder='Nova senha'
                                         value={password}
                                         onChange={e => setPassword(e.target.value)} />
+                                    {erros?.error.senha &&
+                                        <span className='mensagemError'>{erros.error.senha._errors[0]}</span>
+                                    }
+                                    </div>
                                 </div>
                                 <p className='textoInformativo'>As pessoas que usam nosso serviço podem ter carregado suas informações de contato no Facebook.
                                     <a className="linkDoTexto" href="/help/637205020878504" role="link" target="_blank" >Saiba mais</a>.
