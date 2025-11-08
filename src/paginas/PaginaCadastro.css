@@ -57,7 +57,7 @@ div.inputEError {
 span.mensagemError{
     position: absolute;
     color: red;
-    margin-top: 45px;
+    margin-top: 42px;
 }
 
 #cadastroNome {
@@ -122,7 +122,7 @@ select.seletores {
 
 #containerPrincipalGenero {
     padding-top: 10px;
-    padding-bottom: 10px;
+    padding-bottom: 15px;
 }
 
 #tituloGenero {
