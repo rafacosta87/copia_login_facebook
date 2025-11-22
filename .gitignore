@@ -11,7 +11,11 @@ node_modules
 dist
 dist-ssr
 *.local
-
+Rascunho.tsx
+Rascunho2.tsx
+Rascunho3.tsx
+Rascunho4.tsx
+Rascunho5.tsx
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

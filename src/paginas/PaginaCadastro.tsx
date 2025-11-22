@@ -1,107 +1,119 @@
 //como estamos pegando o id na linha 42 , se "result" é igual a "reponse.json" , e "response" é os dados que mandamos(post) para o banco. E o id é criado no banco, como que estamos pegando esse id , se não fizemos um get no banco? 
-import { useState, useRef } from 'react'
+import { useRef } from 'react'
 import './PaginaCadastro.css'
 import Rodape from '../components/Rodape'
 import LogoCabecalho from '../components/LogoCabecalho'
 import { Camera } from 'lucide-react'
+import { useForm, type SubmitHandler } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import axios from 'axios';
 
-interface Erros {
-    error: Dados;
+interface FormValues {
+    nome: string;
+    sobrenome: string;
+    email: string;
+    senha: string;
+    imagem: string;
+    diaNascimento: number;
+    mesNascimento: number;
+    anoNascimento: number;
+    genero: 'masculino' | 'feminino' | 'personalizado' | '';
 }
 
-interface Dados {
-    nome: Erro
-    sobrenome: Erro
-    email: Erro
-    genero: Erro
-    imagem?: Erro
-    data_nascimento: Erro
-    senha: Erro
-}
+const diaAtual = new Date().getDate();
+const mesAtual = new Date().getMonth() + 1; // getMonth() retorna 0-11, então adicionamos 1
+const anoAtual = new Date().getFullYear();
 
-interface Erro {
-    _errors: number[]
-}
+const schema = yup.object().shape({
+    nome: yup.string().required('Nome é obrigatório'),
+    sobrenome: yup.string().required('Sobrenome é obrigatório'),
+    email: yup.string().email('Email inválido').required('Email é obrigatório'),
+    senha: yup.string().min(6, 'A senha deve ter pelo menos 6 caracteres').required('Senha é obrigatória'),
+    imagem: yup.string().required('Foto é obrigatória'),
+    diaNascimento: yup.number().required('Dia é obrigatório'),
+    mesNascimento: yup.number().required('Mês é obrigatório'),
+    anoNascimento: yup.number().required('Ano é obrigatório')
+        .max(2021, 'Data incorreta'),
+    genero: yup.string().oneOf(['masculino', 'feminino', 'personalizado', ''], 'Gênero inválido').required('Gênero é obrigatório'),
+});
 
-function PaginaCadastro() {
-    const inputFileRef = useRef<HTMLInputElement | undefined>(undefined)                                                                      //criando a referencia , para passar para o input(l 87), para que possamos executar a função carregaImagem
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [nome, setNome] = useState("")
-    const [sobrenome, setSobrenome] = useState("")
-    const dataAtual = new Date();
-    const [dia, setDia] = useState(dataAtual.getDate());
-    const [mes, setMes] = useState(dataAtual.getMonth() + 1); // getMonth() retorna 0-11, então adicionamos 1
-    const [ano, setAno] = useState(dataAtual.getFullYear());
-    const [genero, setGenero] = useState("")
-    const [imagem, setImagem] = useState<string | null>(null)
-    const [erros, setErros] = useState<Erros | undefined>()
+const getDays = () => Array.from({ length: 31 }, (_, i) => (i + 1).toString());
+const getMonths = () => [
+    { value: '1', label: 'Jan' }, { value: '2', label: 'Fev' },
+    { value: '3', label: 'Mar' }, { value: '4', label: 'Abr' },
+    { value: '5', label: 'Mai' }, { value: '6', label: 'Jun' },
+    { value: '7', label: 'Jul' }, { value: '8', label: 'Ago' },
+    { value: '9', label: 'Set' }, { value: '10', label: 'Out' },
+    { value: '11', label: 'Nov' }, { value: '12', label: 'Dez' },
+];
+const getYears = () => Array.from({ length: 121 }, (_, i) => (new Date().getFullYear() - i).toString());
 
-    console.log(mes)
+const PaginaCadastro = () => {
+    const {
+        register,
+        handleSubmit,
+        setValue,
+        watch,
+        formState: { errors },
+    } = useForm<FormValues>({
+        resolver: yupResolver(schema), // Integração do Yup com o RHF
+        mode: 'onBlur',
+        defaultValues: {
+            genero: '',
+            diaNascimento: diaAtual,
+            mesNascimento: mesAtual,
+            anoNascimento: anoAtual,
+        },
+    });
 
-    const meses = [
-        'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
-        'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'
-    ]
-
-    const renderMeses = () => {
-        return meses.map((nome, index) => (
-            <option key={index} value={index + 1}>{nome}</option>
-        ));
+    const convertToBase64 = (file: File): Promise<string> => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result as string);
+            reader.onerror = (error) => reject(error);
+        });
     };
 
-    const renderDias = () => {
-        const opcoes = [];
-        for (let i = 1; i <= 31; i++) {
-            opcoes.push(<option key={i} value={i}>{i}</option>);
-        }
-        return opcoes;
-    }
+    const inputFileRef = useRef<HTMLInputElement | undefined>(undefined)
+    const imagemCarregada = watch('imagem')
 
-    const renderAnos = () => {
-        const opcoes = [];
-        const anoAtual = new Date().getFullYear();
-        for (let i = anoAtual; i >= 1905; i--) {
-            opcoes.push(<option key={i} value={i}>{i}</option>);
+    const onSubmit: SubmitHandler<FormValues> = async (data) => {
+        const postData = {
+            nome: data.nome,
+            sobrenome: data.sobrenome,
+            email: data.email,
+            senha: data.senha,
+            imagem: data.imagem,
+            genero: data.genero,
+            data_nascimento: `${data.diaNascimento}/${data.mesNascimento}/${data.anoNascimento}`
+        };
+        console.log(postData)
+
+        try {
+            // Envia os dados como multipart/form-data
+            const response = await axios.post('http://localhost:3000/usuario', postData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            console.log('Resposta do servidor:', response.data);
+            alert('Usuário cadastrado com sucesso!');
+            window.location.href = "/"
+        } catch (error) {
+            console.error('Erro ao enviar formulário:', error);
+            alert('Erro ao cadastrar usuário.');
         }
-        return opcoes;
     };
 
-    async function requestCadastro(e) {
-        e.preventDefault()
-        const response = await fetch("http://localhost:3000/usuario", {                                                                        //aqui estamos passando dados para nosso backend, metodo post. No headers o tipo de conteuudo sera aplication/json. Mas abaixo estamos passando na requisição body os dados. Primeiramente passamos o nome da variavel como definimos no backend e a frente passamos o nome que definimos aqui(frontend). Para que o valor chegue na variavel respectiva do backend
-            method: "post",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(
-                {
-                    "email": email,
-                    "senha": password,
-                    "nome": nome,
-                    "sobrenome": sobrenome,
-                    "genero": genero,
-                    "data_nascimento": `${dia}/${mes}/${ano}`,
-                    "imagem": imagem
-                })
-        })
-        if (!response.ok) {
-            const json = await response.json()
-            setErros(json)
-            return
+    const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            const base64String = await convertToBase64(file);
+            setValue('imagem', base64String, { shouldValidate: true }); // Define o valor no hook form
         }
-        window.location.href = "/"                                                                                                              //direcionando para a pagina logado, ao final da função , se tudo der certo , passando o id na url
-    }
-
-    function carregaImagem(e) {                                                                                                                 //função de carregamento da imagem , usamos essa mesma função no projeto google, na parte do cabeçalho
-        const arquivoImagem = e.target.files[0]
-        if (!arquivoImagem) {
-            return
-        }
-        const reader = new FileReader()
-        reader.readAsDataURL(arquivoImagem)
-        reader.onload = () => {
-            setImagem(reader.result as string)
-        }
-    }
+    };
 
     return (
         <div>
@@ -115,104 +127,95 @@ function PaginaCadastro() {
                         <div id='containerLinhaDivisoria'>
                             <hr id='linhaDivisoria' />
                         </div>
-                        <form id="formulario" action="">
+                        <form id="formulario" onSubmit={handleSubmit(onSubmit)}>
                             <div id='cadastroNome'>
                                 <div className='inputEError'>
                                     <input
-                                        className="inputCadastroNome"
+                                        className={`input-field ${errors.nome ? 'inputCadastroNomeErro' : 'inputCadastroNome'}`}
                                         type="text"
                                         placeholder='Nome'
-                                        value={nome}
-                                        onChange={e => setNome(e.target.value)} />
-                                    {erros?.error.nome &&
-                                        <span className='mensagemError'>{erros.error.nome._errors[0]}</span>
-                                    }
+                                        {...register('nome')} />
+                                    {errors.nome && <span className='mensagemError'>{errors.nome.message}</span>}
                                 </div>
                                 <div>
                                     <div className='inputEError'>
                                         <input
-                                            className="inputCadastroNome"
+                                            className={`input-field ${errors.sobrenome ? 'inputCadastroNomeErro' : 'inputCadastroNome'}`}
                                             type="text"
                                             placeholder='Sobrenome'
-                                            value={sobrenome}
-                                            onChange={e => setSobrenome(e.target.value)} />
-                                        {erros?.error.sobrenome &&
-                                            <span className='mensagemError'>{erros.error.sobrenome._errors[0]}</span>
-                                        }
+                                            {...register('sobrenome')} />
+                                        {errors.sobrenome && <span className='mensagemError'>{errors.sobrenome.message}</span>}
                                     </div>
                                 </div>
-                                <div id='iconeCamera' title='Adicionar foto de Perfil' onClick={() => inputFileRef.current?.click()}>
-                                    <input type="file" hidden ref={inputFileRef} accept='image/*' onChange={carregaImagem} />
-                                    {imagem ? <img id="imagemCadastro" src={imagem} /> : <Camera />}
+                                <div id='iconeCamera' title='Foto de Perfil' onClick={() => inputFileRef.current?.click()}>
+                                    <input type="file" hidden ref={inputFileRef} accept='image/*' onChange={handleImageChange} />
+                                    {imagemCarregada ? <img id="imagemCadastro" src={imagemCarregada} /> : <Camera/>}
+                                    <div>
+                                        {errors.imagem && <span style={{ position: "absolute", marginTop: "5px", fontSize: 10, color: "red", marginLeft: -24 }}>{errors.imagem.message}</span>}
+                                    </div>
                                 </div>
                             </div>
                             <div id='containerPrincipalData'>
                                 <div id='tituloData'>Data de nascimento
                                     <a id="birthday-help" href="#" title="Clique para obter mais informações" role="button"><i></i></a>
                                 </div>
-                                <div >
-                                    <span id="containerData" data-type="selectors" data-name="birthday_wrapper" aria-describedby="birthday-error-message" >
+                                <div>
+                                    <span id="containerData" data-type="selectors">
+                                        <select className={`input-field ${errors.anoNascimento ? 'seletoresErro' : 'seletores'}`} title='Dia' {...register('diaNascimento')}>
+                                            {getDays().map((day) => (
+                                                <option key={day} value={day}>{day}</option>
+                                            ))}
+                                        </select>
+                                        <select className={`input-field ${errors.anoNascimento ? 'seletoresErro' : 'seletores'}`} title='Mês'{...register('mesNascimento')}>
 
-                                        <select className="seletores" aria-label="Dia" id="day" title="Dia" value={dia} onChange={(e) => setDia(parseInt(e.target.value))}>
-                                            {renderDias()}
+                                            {getMonths().map((month) => (
+                                                <option key={month.value} value={month.value}>{month.label}</option>
+                                            ))}
                                         </select>
-                                        <select className="seletores" aria-label="Mês" id="month" title="Mês"
-                                            value={mes} onChange={(e) => setMes(parseInt(e.target.value))} >
-                                            {renderMeses()}
-                                        </select>
-                                        <select className="seletores" aria-label="Ano" id="year" title="Ano"
-                                            value={ano} onChange={(e) => setAno(parseInt(e.target.value))}>
-                                            {renderAnos()}
+                                        <select className={`input-field ${errors.anoNascimento ? 'seletoresErro' : 'seletores'}`} title='Ano' {...register('anoNascimento')}>
+
+                                            {getYears().map((year) => (
+                                                <option key={year} value={year}>{year}</option>
+                                            ))}
                                         </select>
                                     </span>
                                 </div>
-                                {erros?.error.sobrenome &&
-                                    <span style={{ color: "red", position: "absolute", marginTop: "-2px" }}>{erros.error.sobrenome._errors[0]}</span>
-                                }
+                                {(errors.diaNascimento || errors.mesNascimento || errors.anoNascimento) && (
+                                    <span style={{ color: "red", position: "absolute", marginTop: "-2px", fontSize: 10 }}>{errors.anoNascimento?.message} </span>
+                                )}
                                 <div id="containerPrincipalGenero">
                                     <div id="tituloGenero">Gênero
                                         <a title="Clique para obter mais informações" href="#" role="button">
                                             <i > </i>
                                         </a>
                                     </div>
-                                    <span id="containerGenero" data-type="radio" data-name="gender_wrapper" aria-describedby="gender-error-message" >
+                                    <div id="containerGenero" data-type="radio" data-name="gender_wrapper" aria-describedby="gender-error-message" >
                                         <span className='opcoesGenero' >
                                             <label className='genero'>Feminino
-                                                <input className="radio" type="radio" id="sex" name="sex" value="1" aria-describedby="gender-error-message"
-                                                    onClick={() => setGenero("feminino")} />
+                                                <input className="radio" type="radio" value="feminino" {...register('genero')} />
                                             </label>
                                         </span>
-                                        <span className='opcoesGenero'>
+                                        <span className='opcoesGenero' >
                                             <label className='genero'>Masculino
-                                                <input className="radio" type="radio" id="sex" name="sex" value="2" aria-describedby="gender-error-message" onClick={() => setGenero("masculino")} />
+                                                <input className="radio" type="radio" value="masculino" {...register('genero')} />
                                             </label>
                                         </span>
-                                        <span className='opcoesGenero'>
+                                        <span className='opcoesGenero' >
                                             <label className='genero'>Personalizado
-                                                <input className="radio" type="radio" id="sex" name="sex" value="-1" aria-describedby="gender-error-message" onClick={() => setGenero("personalizado")} />
+                                                <input className="radio" type="radio" value="personalizado" {...register('genero')} />
                                             </label>
                                         </span>
-                                    </span>
-                                    {erros?.error.genero &&
-                                        <span style={{ color: "red", position: "absolute", marginTop: "-2px" }}>{erros.error.genero._errors[0]}</span>
-                                    }
+                                    </div>
+                                    {errors.genero && <span style={{ color: "red", position: "absolute", marginTop: "-2px", fontSize: 10 }}>{errors.genero.message}</span>}
                                 </div>
                                 <div id='containerEmailESenha'>
                                     <div className='inputEError'>
-                                        <input className="inputEmailESenha" type="text" placeholder='Celular ou email'
-                                            value={email}
-                                            onChange={e => setEmail(e.target.value)} />
-                                        {erros?.error.email &&
-                                            <span className='mensagemError'>{erros.error.email._errors[0]}</span>
-                                        }
+                                        <input className={`input-field ${errors.email ? 'inputEmailESenhaErro' : 'inputEmailESenha'}`} placeholder='Celular ou email' type="email" {...register('email')} />
+                                        {errors.email && <span style={{ fontSize: 10, color: 'red', position: 'absolute', marginTop: 41 }}>{errors.email.message}</span>}
                                     </div>
                                     <div className='inputEError'>
-                                        <input className="inputEmailESenha" type="text" placeholder='Nova senha'
-                                            value={password}
-                                            onChange={e => setPassword(e.target.value)} />
-                                        {erros?.error.senha &&
-                                            <span className='mensagemError'>{erros.error.senha._errors[0]}</span>
-                                        }
+                                        <input className={`input-field ${errors.senha ? 'inputEmailESenhaErro' : 'inputEmailESenha'}`} type="text" placeholder='Nova senha' {...register('senha')} />
+                                        {errors.senha && <span style={{ fontSize: 10, color: 'red', position: 'absolute', marginTop: 40 }}>{errors.senha.message}</span>}
                                     </div>
                                 </div>
                                 <p className='textoInformativo'>As pessoas que usam nosso serviço podem ter carregado suas informações de contato no Facebook.
@@ -222,13 +225,14 @@ function PaginaCadastro() {
                                     <a className="linkDoTexto" href="/legal/terms/update" target="_blank">Termos</a>, <a className="linkDoTexto" href="/about/privacy/update" target="_blank">Política de Privacidade</a> e <a className="linkDoTexto" href="/policies/cookies/" target="_blank">Política de Cookies</a>. Você poderá receber notificações por SMS e cancelar isso quando quiser.</p>
                                 <div id='containerBotaoELink'>
 
-                                    <button id='botaoCadastrar' onClick={(e) => requestCadastro(e)}>
-                                        Cadastre-se
+                                    <button id='botaoCadastrar' type="submit">
+                                        Cadastrar
                                     </button>
                                     <a id='linkConta' href="/" aria-label="Já tem uma conta?" >Já tem uma conta?</a>
                                 </div>
                             </div>
                         </form>
+
                     </div>
                 </div>
             </div>
@@ -237,4 +241,3 @@ function PaginaCadastro() {
     )
 }
 export default PaginaCadastro
-

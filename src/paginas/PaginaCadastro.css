@@ -57,13 +57,14 @@ div.inputEError {
 span.mensagemError{
     position: absolute;
     color: red;
-    margin-top: 42px;
+    margin-top: 43px;
+    font-size: 10px;
 }
 
 #cadastroNome {
     width: 399px;
     display: flex;
-    justify-content: space-between;
+   gap: 14px;
     align-items: center;
     flex-direction: row;
     margin-bottom: 10px;
@@ -71,7 +72,7 @@ span.mensagemError{
 }
 
 input.inputCadastroNome {
-    width: 145px;
+    width: 135px;
     padding: 11px;
     font-size: 15px;
     line-height: 16px;
@@ -79,9 +80,20 @@ input.inputCadastroNome {
     border-radius: 5px;
     color: #1c1e21;
 }
+input.inputCadastroNomeErro {
+    width: 135px;
+    padding: 11px;
+    font-size: 15px;
+    line-height: 16px;
+    border: 1px solid #CCD0D5;
+    border-radius: 5px;
+    color: #1c1e21;
+    border-color: red;
+}
 
 #iconeCamera {
     cursor: pointer;
+    margin-left: 12px;
 }
 
 #imagemCadastro {
@@ -119,6 +131,20 @@ select.seletores {
     border: 1px solid #CCD0D5;
     padding-bottom: 2px;
 }
+select.seletoresErro {
+    border-radius: 4px;
+    color: #1c1e21;
+    font-size: 15px;
+    font-weight: 400;
+    height: 36px;
+    line-height: 20px;
+    width: 125px;
+    height: 36px;
+    background-color: #fff;
+    border: 1px solid #CCD0D5;
+    padding-bottom: 2px;
+    border-color: red;
+}
 
 #containerPrincipalGenero {
     padding-top: 10px;
@@ -130,7 +156,6 @@ select.seletores {
     font-size: 12px;
     font-weight: 400;
     line-height: 20px;
-    margin-top: 2px;
     margin-bottom: 4px;
 }
 
@@ -174,7 +199,7 @@ input.radio {
 #containerEmailESenha {
     display: flex;
     flex-direction: column;
-    gap: 17px;
+    gap: 15px;
     margin-bottom: 20px;
 }
 
@@ -186,6 +211,16 @@ input.radio {
     padding: 8px 11px 14px 11px;
     border: 1px solid #CCD0D5;
     color: #1c1e21;
+}
+.inputEmailESenhaErro {
+    border-radius: 5px;
+    width: 375px;
+    font-size: 16px;
+    line-height: 16px;
+    padding: 8px 11px 14px 11px;
+    border: 1px solid #CCD0D5;
+    color: #1c1e21;
+    border-color: red;
 }
 
 p.textoInformativo {
@@ -234,3 +269,7 @@ a.linkDoTexto {
     line-height: 20px;
     margin: 10px 0;
 }
+
+
+
+

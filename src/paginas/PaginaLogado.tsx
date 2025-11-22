@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 //pq quando usamos o console , imprimi 2 vezes os dados no terminal
+
 import LogoCabecalho from '../components/LogoCabecalho'
 import './PaginaLogado.css'
 import { PersonStanding, User, Mail, Lock, Pencil, LogOut, Calendar, Check, X, CircleX, UserRoundX, UserRound } from "lucide-react"
@@ -12,7 +13,7 @@ interface Usuario {
     sobrenome: string;
     email: string;
     genero: string;
-    imagem?: string; // Opcional
+    imagem: string; // Opcional
     data_nascimento: string;
     senha: string;
 }
@@ -34,7 +35,6 @@ function PaginaLogado() {
     const [dataNascimento, setDataNascimento] = useState<string | null>(null)
     const [senha, setSenha] = useState<string | null>(null)
     const [imagem, setImagem] = useState<string | null>(null)
-    console.log(imagem)
 
     const fetchData = async () => {
         const res = await fetch(`http://localhost:3000/usuario/${idUsuario}`, {
@@ -56,7 +56,6 @@ function PaginaLogado() {
             window.location.href = "/"
         }
     }
-
 
     // const deletarConta = async () => {
     //     const res = await fetch(`http://localhost:3000/usuario/${idUsuario}`, {
@@ -118,7 +117,7 @@ function PaginaLogado() {
                 <div id="imagemUsuario" onClick={() => inputFileRef.current?.click()} title='Alterar imagem'>
                     <label htmlFor='inputImagem' id='hoverImagemUsuario'></label>
                     <input type="file" id='inputImagem' hidden accept='image/*' onChange={carregaImagem} />
-                    <img src={dadosUsuario?.imagem} alt="Imagem" />
+                    <img src={ dadosUsuario?.imagem} alt="Imagem" />
                 </div>
                 <div id="containerDadosUsuario">
                     <div className="dadosUsuario">
