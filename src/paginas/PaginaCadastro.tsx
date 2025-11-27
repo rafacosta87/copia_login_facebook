@@ -7,7 +7,7 @@ import { Camera } from 'lucide-react'
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import axios from 'axios';
+// import axios from 'axios';
 
 interface FormValues {
     nome: string;
@@ -38,7 +38,7 @@ const schema = yup.object().shape({
     genero: yup.string().oneOf(['masculino', 'feminino', 'personalizado', ''], 'Gênero inválido').required('Gênero é obrigatório'),
 });
 
-const getDays = () => Array.from({ length: 31 }, (_, i) => (i + 1).toString());
+const getDays = () => Array.from({ length: 31 }, (_, i) => (i + 1).toString())
 const getMonths = () => [
     { value: '1', label: 'Jan' }, { value: '2', label: 'Fev' },
     { value: '3', label: 'Mar' }, { value: '4', label: 'Abr' },
@@ -46,8 +46,8 @@ const getMonths = () => [
     { value: '7', label: 'Jul' }, { value: '8', label: 'Ago' },
     { value: '9', label: 'Set' }, { value: '10', label: 'Out' },
     { value: '11', label: 'Nov' }, { value: '12', label: 'Dez' },
-];
-const getYears = () => Array.from({ length: 121 }, (_, i) => (new Date().getFullYear() - i).toString());
+]
+const getYears = () => Array.from({ length: 121 }, (_, i) => (new Date().getFullYear() - i).toString())
 
 const PaginaCadastro = () => {
     const {
@@ -56,6 +56,7 @@ const PaginaCadastro = () => {
         setValue,
         watch,
         formState: { errors },
+        setError,
     } = useForm<FormValues>({
         resolver: yupResolver(schema), // Integração do Yup com o RHF
         mode: 'onBlur',
@@ -65,16 +66,16 @@ const PaginaCadastro = () => {
             mesNascimento: mesAtual,
             anoNascimento: anoAtual,
         },
-    });
+    })
 
     const convertToBase64 = (file: File): Promise<string> => {
         return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result as string);
-            reader.onerror = (error) => reject(error);
-        });
-    };
+            const reader = new FileReader()
+            reader.readAsDataURL(file)
+            reader.onload = () => resolve(reader.result as string)
+            reader.onerror = (error) => reject(error)
+        })
+    }
 
     const inputFileRef = useRef<HTMLInputElement | undefined>(undefined)
     const imagemCarregada = watch('imagem')
@@ -88,32 +89,80 @@ const PaginaCadastro = () => {
             imagem: data.imagem,
             genero: data.genero,
             data_nascimento: `${data.diaNascimento}/${data.mesNascimento}/${data.anoNascimento}`
-        };
+        }
         console.log(postData)
 
         try {
             // Envia os dados como multipart/form-data
-            const response = await axios.post('http://localhost:3000/usuario', postData, {
+            const response = await fetch('http://localhost:3000/usuario', {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-            });
-            console.log('Resposta do servidor:', response.data);
-            alert('Usuário cadastrado com sucesso!');
+                body: JSON.stringify(postData),
+            })
+            if (!response.ok) {
+                const errorData = await response.json()
+                // 3. Tratamento de erros específicos da API (ex: email único)
+                if (errorData.errors[0].type === "is-valid-date") {
+                    setError('anoNascimento', {
+                        type: 'manual',
+                        message: errorData.errors[0].message,
+                    })
+                } else if (errorData.errors[0].type === 'email') {
+
+                    setError('email', {
+                        type: 'manual',
+                        message: errorData.errors[0].message,
+                    })
+                } else {
+                    // Tratar outros erros genéricos da API
+                    console.error('Erro na API:', errorData.message)
+                }
+                return
+            }
+
+            // Sucesso no cadastro
+            alert('Cadastro realizado com sucesso, faça o login para se conectar')
             window.location.href = "/"
         } catch (error) {
-            console.error('Erro ao enviar formulário:', error);
-            alert('Erro ao cadastrar usuário.');
+            console.error('Erro na requisição:', error)
+            alert('Ocorreu um erro ao tentar cadastrar. Tente novamente.')
         }
-    };
+    }
+
+//   const onSubmit = async (postaData) => {
+//     try {
+//       // 2. Enviar dados para a API
+//       await axios.post('http://localhost:3000/usuario', postaData)
+//       alert('Cadastro realizado com sucesso!')
+//     } catch (error) {
+//       // 3. Lidar com erros da API e usar setError
+//       if (error.response && error.response.data && error.response.data.error) {
+//         const { field, message } = error.response.data.error
+//         if (field && message) {
+//           // Define o erro no campo específico do formulário
+//           setError(field, {
+//             type: 'manual',
+//             message: message,
+//           })
+//         } else {
+//           // Erro geral
+//           alert(message)
+//         }
+//       } else {
+//         alert('Ocorreu um erro ao cadastrar.')
+//       }
+//     }
+//   }
 
     const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
+        const file = event.target.files?.[0]
         if (file) {
-            const base64String = await convertToBase64(file);
-            setValue('imagem', base64String, { shouldValidate: true }); // Define o valor no hook form
+            const base64String = await convertToBase64(file)
+            setValue('imagem', base64String, { shouldValidate: true }) // Define o valor no hook form
         }
-    };
+    }
 
     return (
         <div>
@@ -149,7 +198,7 @@ const PaginaCadastro = () => {
                                 </div>
                                 <div id='iconeCamera' title='Foto de Perfil' onClick={() => inputFileRef.current?.click()}>
                                     <input type="file" hidden ref={inputFileRef} accept='image/*' onChange={handleImageChange} />
-                                    {imagemCarregada ? <img id="imagemCadastro" src={imagemCarregada} /> : <Camera/>}
+                                    {imagemCarregada ? <img id="imagemCadastro" src={imagemCarregada} /> : <Camera />}
                                     <div>
                                         {errors.imagem && <span style={{ position: "absolute", marginTop: "5px", fontSize: 10, color: "red", marginLeft: -24 }}>{errors.imagem.message}</span>}
                                     </div>
