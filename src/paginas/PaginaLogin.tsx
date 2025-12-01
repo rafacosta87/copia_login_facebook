@@ -2,58 +2,19 @@
 //implementar melhor o tipyscript
 //implementar erro se usuario não digitar um dos campos no login e no cadastro
 import "./PaginaLogin.css";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import IconeOlho from "../components/IconeOlho";
 import IconeOlhoFechado from "../components/IconeOlhoFechado";
 import Rodape from "../components/Rodape";
 
 function PaginaLogin() {
-    // const [emails, setEmails] = useState(JSON.parse(localStorage.getItem("emails") ?? "[]"))
     const [email, setEmail] = useState("")
-    // const [arrayPassword, setArrayPassword] = useState(JSON.parse(localStorage.getItem("arrayPassword") ?? "[]"))
     const [password, setPassword] = useState("")
     const [mostrarSenha, setMostrarSenha] = useState(false)
-
-    // useEffect(() => {
-    //     if (emails) {
-    //         localStorage.setItem("emails", JSON.stringify(emails))
-    //     }
-    // }, [emails])
-
-    // useEffect(() => {
-    //     if (arrayPassword) {
-    //         localStorage.setItem("arrayPassword", JSON.stringify(arrayPassword))
-    //     }
-    // }, [arrayPassword])
-
-    // function adcionarEmail() {
-    //     if (!password) {
-    //         return
-    //     }
-    //     if (email.trim() == "") {
-    //         return console.log("campo obrigatório")
-    //     }
-    //     if (emails.filter((dado: string) => dado == email).length > 0) {
-    //         return setEmail(""), console.log("email ja existe")
-    //     }
-    //     const copiaEmails = [...emails]
-    //     copiaEmails.unshift(email)
-    //     setEmails(copiaEmails)
-    //     setEmail("")
-    // }
-
-    // function adcionarPassword() {
-    //     if (!email) {
-    //         return
-    //     }
-    //     if (password.trim() == "") {
-    //         return console.log("campo obrigatório")
-    //     }
-    //     const copiaArrayPassword = [...arrayPassword]
-    //     copiaArrayPassword.unshift(password)
-    //     setArrayPassword(copiaArrayPassword)
-    //     setPassword("")
-    // }
+    const [emailError, setEmailError] = useState("")
+    const [passwordError, setPasswordError] = useState("")
+    // const [emailObrigatorio, setEmailObrigatorio] = useState("")
+    // const [passwordObrigatorio, setPasswordObrigatorio] = useState("")
 
     async function requestLogin() {
         const response = await fetch("http://localhost:3000/login", {
@@ -61,26 +22,30 @@ function PaginaLogin() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ "email": email, "senha": password })
         }).then(async response => {
-            console.log(response)
+
+            if (response.status == 400) {
+                return setEmailError("Email é Obrigatorio"), setPasswordError("")
+            }
+            if (response.status == 402) {
+                return setPasswordError("Senha é Obrigatorio"), setEmailError("")
+            }
             if (response.status == 404) {
-                return console.log("Usuário não existe")
+                return setEmailError("Email não existe"), setPasswordError("")
+            }
+            if (response.status == 401) {
+                return setPasswordError("Senha incorreta"), setEmailError("")
             }
             if (response.status == 200) {
-                const result = await response.json()                                                                                                     //transformando os dados de response(l 22) em json
-                console.log(result)
+                const result = await response.json()                                                                                                //transformando os dados de response(l 22) em json
                 const id = result?.id
                 window.location.href = `/logado?u=${id}`
                 return
             }
         })
-
     }
 
     function login() {
-        // adcionarEmail()
-        // adcionarPassword()
         requestLogin()
-        // window.location.href = "https://www.facebook.com/login/?privacy_mutation_token=eyJ0eXBlIjowLCJjcmVhdGlvbl90aW1lIjoxNzU4MjgyNDA3LCJjYWxsc2l0ZV9pZCI6MzgxMjI5MDc5NTc1OTQ2fQ%3D%3D&next"
     }
 
     return (
@@ -88,19 +53,15 @@ function PaginaLogin() {
 
             <div id="containerConteudo">
                 <div id="container">
-
-
                     <div id="containerLogo" >
-
                         <img id="logo" src="https://static.xx.fbcdn.net/rsrc.php/y1/r/4lCu2zih0ca.svg" alt="Facebook"></img>
                         <h2>O Facebook ajuda você a se conectar e compartilhar com as pessoas que fazem parte da sua vida.</h2>
                     </div>
-
                     <div id="containerLogin">
                         <div id="login">
                             <input
                                 type="text"
-                                className="inputTextEmail"
+                                className={`input-field ${emailError ? 'inputTextEmailErro' : 'inputTextEmail'}`}
                                 name="email"
                                 id="email"
                                 placeholder="Email ou telefone"
@@ -111,8 +72,7 @@ function PaginaLogin() {
                                         login()
                                     }
                                 }} />
-                            <div id="bordaInputPassword" >
-
+                            <div className={`input-field ${passwordError ? 'bordaInputPasswordErro' : 'bordaInputPassword'}`} >
                                 <input
                                     type={mostrarSenha ? "text" : "password"}
                                     className="inputText"
@@ -129,12 +89,13 @@ function PaginaLogin() {
                                     }}
                                 />
                                 {password != "" &&
-
                                     <div id="iconeOlho" onClick={() => setMostrarSenha((prev) => !prev)}>
                                         {mostrarSenha ? <IconeOlho /> : <IconeOlhoFechado />}
                                     </div>
                                 }
                             </div>
+                            {passwordError && <span className="loginErros">{passwordError}</span>}
+                            {emailError && <span className="loginErros">{emailError}</span>}
                             <button
                                 className="buttonEntrar"
                                 type="submit"

@@ -120,6 +120,19 @@ input.inputTextEmail {
     border: solid 1px #dddfe2;
 }
 
+input.inputTextEmailErro {
+    font-size: 18px;
+    padding: 14px 16px;
+    width: 330px;
+    border-radius: 6px;
+    background: #fff;
+    height: 22px;
+    margin-bottom: -3px;
+    outline: none;
+    border: solid 1px #dddfe2;
+    border-color: red;
+}
+
 input.inputTextEmail:focus {
     border-color: #0866ff;
     box-shadow: 0 0 0 2px #e7f3ff;
@@ -134,7 +147,7 @@ input.inputText {
     width: 100%;
 }
 
-#bordaInputPassword {
+div.bordaInputPassword {
     font-size: 18px;
     padding: 14px 16px;
     width: 330px;
@@ -148,10 +161,33 @@ input.inputText {
     align-items: center;
 }
 
-#bordaInputPassword:focus {
+div.bordaInputPasswordErro {
+    font-size: 18px;
+    padding: 14px 16px;
+    width: 330px;
+    border-radius: 6px;
+    background: #fff;
+    height: 22px;
+    margin-bottom: -3px;
+    border: solid 1px #dddfe2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-color: red;
+}
+
+div.bordaInputPassword:focus-within {
     border-color: #0866ff;
     box-shadow: 0 0 0 2px #e7f3ff;
     caret-color: #0866ff;
+}
+
+span.loginErros{
+    font-size: 10px;
+    color: red;
+    margin-top: 118px;
+    position: absolute;
+    margin-left: -270px;
 }
 
 button.buttonEntrar {
