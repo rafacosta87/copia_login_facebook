@@ -27,7 +27,7 @@ function PaginaLogin() {
                 return setEmailError("Email é Obrigatorio"), setPasswordError("")
             }
             if (response.status == 402) {
-                return setPasswordError("Senha é Obrigatorio"), setEmailError("")
+                return setPasswordError("Senha é Obrigatoria"), setEmailError("")
             }
             if (response.status == 404) {
                 return setEmailError("Email não existe"), setPasswordError("")

@@ -38,7 +38,7 @@ img{
 }
 div.dadosUsuario{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: space-between;
     width: 366px;
@@ -135,4 +135,11 @@ div.containerLinksAtualizacao{
 #hoverImagemUsuario:hover{
     opacity: 0.10;
     cursor: pointer;
+}
+span.erroDeAtualizacao{
+    position: absolute;
+    margin-top: 30px;
+    font-size: 10px;
+    color: red;
+    width: 302px;
 }

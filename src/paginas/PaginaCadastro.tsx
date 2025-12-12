@@ -29,7 +29,7 @@ const schema = yup.object().shape({
     nome: yup.string().required('Nome é obrigatório'),
     sobrenome: yup.string().required('Sobrenome é obrigatório'),
     email: yup.string().email('Email inválido').required('Email é obrigatório'),
-    senha: yup.string().min(6, 'A senha deve ter pelo menos 6 caracteres').required('Senha é obrigatória'),
+    senha: yup.string().required('Senha é obrigatória').min(6, 'A senha deve ter pelo menos 6 caracteres'),
     imagem: yup.string().required('Foto é obrigatória'),
     diaNascimento: yup.number().required('Dia é obrigatório'),
     mesNascimento: yup.number().required('Mês é obrigatório'),
@@ -103,6 +103,7 @@ const PaginaCadastro = () => {
             })
             if (!response.ok) {
                 const errorData = await response.json()
+                
                 // 3. Tratamento de erros específicos da API (ex: email único)
                 if (errorData.errors[0].type === "is-valid-date") {
                     setError('anoNascimento', {

@@ -16,6 +16,8 @@ Rascunho2.tsx
 Rascunho3.tsx
 Rascunho4.tsx
 Rascunho5.tsx
+PaginaLogadoRascunho.tsx
+PaginaLogadoRascunho2.tsx
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
