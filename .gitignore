@@ -18,6 +18,10 @@ Rascunho4.tsx
 Rascunho5.tsx
 PaginaLogadoRascunho.tsx
 PaginaLogadoRascunho2.tsx
+CampoPerfil1.tsx
+PaginaLogado1.tsx
+PaginaLogado2.tsx
+RascunhioDoNovoCodigo.tsx
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
