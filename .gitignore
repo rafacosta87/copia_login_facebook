@@ -22,6 +22,7 @@ CampoPerfil1.tsx
 PaginaLogado1.tsx
 PaginaLogado2.tsx
 RascunhioDoNovoCodigo.tsx
+PaginaLogado2.css
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

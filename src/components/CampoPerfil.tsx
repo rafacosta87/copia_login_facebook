@@ -1,5 +1,6 @@
 import { Pencil, Check, X, Loader2 } from "lucide-react";
 import { useState, type ReactNode, type ChangeEvent, type KeyboardEvent } from 'react';
+import "./CampoPerfil.css"
 
 interface CampoPerfilProps {
     icone: ReactNode;
@@ -94,7 +95,7 @@ export function CampoPerfil({
                     </div>
                 ) : (
                     <div className='containerAtualizarDados'>
-                        {valorExibido}
+                      <p className="dados" >{valorExibido}</p>  
                         <div
                             className="iconeLapis"
                             title={`Alterar ${titulo.toLowerCase()}`}

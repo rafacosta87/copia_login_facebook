@@ -117,7 +117,7 @@ function PaginaLogado() {
                 <LogoCabecalho />
 
                 <div id="imagemUsuario" onClick={() => inputFileRef.current?.click()} title='Alterar imagem'>
-                    <div id='hoverImagemUsuario'>Clique para alterar</div>
+                    <div id='hoverImagemUsuario'></div>
                     <input type="file" ref={inputFileRef} hidden accept='image/*' onChange={handleCarregaImagem} />
                     <img src={dadosUsuario?.imagem || "/default-avatar.png"} alt="Perfil" />
                 </div>
