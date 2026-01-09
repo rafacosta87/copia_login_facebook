@@ -6,48 +6,68 @@ import { useState } from "react";
 import IconeOlho from "../components/IconeOlho";
 import IconeOlhoFechado from "../components/IconeOlhoFechado";
 import Rodape from "../components/Rodape";
+import { useNavigate } from "react-router-dom";
 
 function PaginaLogin() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [mostrarSenha, setMostrarSenha] = useState(false)
-    const [emailError, setEmailError] = useState("")
-    const [passwordError, setPasswordError] = useState("")
-    // const [emailObrigatorio, setEmailObrigatorio] = useState("")
-    // const [passwordObrigatorio, setPasswordObrigatorio] = useState("")
+    const [isLoading, setIsLoading] = useState(false);
 
-    async function requestLogin() {
-        const response = await fetch("http://localhost:3000/login", {
-            method: "post",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ "email": email, "senha": password })
-        }).then(async response => {
+    // Estado de erro centralizado
+    const [errors, setErrors] = useState({ email: "", password: "" });
 
-            if (response.status == 400) {
-                return setEmailError("Email é Obrigatorio"), setPasswordError("")
-            }
-            if (response.status == 402) {
-                return setPasswordError("Senha é Obrigatoria"), setEmailError("")
-            }
-            if (response.status == 404) {
-                return setEmailError("Email não existe"), setPasswordError("")
-            }
-            if (response.status == 401) {
-                return setPasswordError("Senha incorreta"), setEmailError("")
-            }
-            if (response.status == 200) {
-                const result = await response.json()                                                                                                //transformando os dados de response(l 22) em json
-                const id = result?.id
-                window.location.href = `/logado?u=${id}`
-                return
-            }
-        })
-    }
+    const navigate = useNavigate();
 
-    function login() {
-        requestLogin()
-    }
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            handleLogin();
+        }
+    };
 
+
+    const handleLogin = async () => {
+        // Resetar estados antes da tentativa
+        setErrors({ email: "", password: "" });
+        setIsLoading(true);
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        try {
+            const response = await fetch("http://localhost:3000/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, senha: password }),
+            });
+
+            const data = await response.json();
+
+            if (response.status === 200) {
+                navigate(`/logado?u=${data?.id}`);
+            } else {
+                // CORREÇÃO AQUI: Tipagem do mapa de erros para aceitar indexação por número
+                const errorMap: { [key: number]: { email?: string; password?: string } } = {
+                    400: { email: "Email é obrigatório" },
+                    402: { password: "Senha é obrigatória" },
+                    404: { email: "Email não cadastrado" },
+                    401: { password: "Senha incorreta" },
+                };
+
+                // Verificamos se o status retornado existe no nosso mapa
+                const errorData = errorMap[response.status];
+
+                if (errorData) {
+                    // Atualiza apenas os campos que vieram no erro (usando spread para manter os outros como "")
+                    setErrors(prev => ({ ...prev, ...errorData }));
+                } else {
+                    setErrors({ email: "Erro ao entrar. Tente novamente.", password: "" });
+                }
+            }
+        } catch (err) {
+            console.error("Erro de conexão:", err);
+            setErrors({ email: "Erro de conexão com o servidor.", password: "" });
+        } finally {
+            setIsLoading(false);
+        }
+    };
     return (
         <div>
 
@@ -61,18 +81,16 @@ function PaginaLogin() {
                         <div id="login">
                             <input
                                 type="text"
-                                className={`input-field ${emailError ? 'inputTextEmailErro' : 'inputTextEmail'}`}
+                                className={`inputTextEmail ${errors.email ? "input-error" : ""}`}
                                 name="email"
                                 id="email"
                                 placeholder="Email ou telefone"
                                 value={email}
                                 onChange={e => setEmail(e.target.value)}
-                                onKeyDown={(e) => {
-                                    if (e.code == "Enter") {
-                                        login()
-                                    }
-                                }} />
-                            <div className={`input-field ${passwordError ? 'bordaInputPasswordErro' : 'bordaInputPassword'}`} >
+                                onKeyDown={handleKeyDown}
+                                disabled={isLoading}
+                            />
+                            <div className={`bordaInputPassword ${errors.password ? "input-error" : ""}`} >
                                 <input
                                     type={mostrarSenha ? "text" : "password"}
                                     className="inputText"
@@ -82,11 +100,8 @@ function PaginaLogin() {
                                     aria-label="Senha"
                                     value={password}
                                     onChange={e => setPassword(e.target.value)}
-                                    onKeyDown={(e) => {
-                                        if (e.code == "Enter") {
-                                            login()
-                                        }
-                                    }}
+                                    onKeyDown={handleKeyDown}
+                                    disabled={isLoading}
                                 />
                                 {password != "" &&
                                     <div id="iconeOlho" onClick={() => setMostrarSenha((prev) => !prev)}>
@@ -94,16 +109,15 @@ function PaginaLogin() {
                                     </div>
                                 }
                             </div>
-                            {passwordError && <span className="loginErros">{passwordError}</span>}
-                            {emailError && <span className="loginErros">{emailError}</span>}
+                            {errors.email && <span className="loginErros">{errors.email}</span>}
+                            {errors.password && <span className="loginErros">{errors.password}</span>}
                             <button
                                 className="buttonEntrar"
                                 type="submit"
-                                onClick={() => {
-                                    login()
-                                }}
+                                onClick={handleLogin}
+                                disabled={isLoading}
                             >
-                                Entrar
+                                {isLoading ? "Entrando..." : "Entrar"}
                             </button>
                             <a className="novaSenha" href="https://www.facebook.com/recover/initiate/?privacy_mutation_token=eyJ0eXBlIjowLCJjcmVhdGlvbl90aW1lIjoxNzU4MzM1ODY0LCJjYWxsc2l0ZV9pZCI6MzgxMjI5MDc5NTc1OTQ2fQ%3D%3D&amp;ars=facebook_login&amp;next">Esqueceu a senha?</a>
                             <hr id="borderTopButton" />
