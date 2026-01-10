@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-//implementar melhor o tipyscript
-//implementar erro se usuario não digitar um dos campos no login e no cadastro
+//passar todas as palavras para portugues ou ingles para manter um padrão
 import "./PaginaLogin.css";
 import { useState } from "react";
 import IconeOlho from "../components/IconeOlho";
@@ -13,7 +11,6 @@ function PaginaLogin() {
     const [password, setPassword] = useState("")
     const [mostrarSenha, setMostrarSenha] = useState(false)
     const [isLoading, setIsLoading] = useState(false);
-
     // Estado de erro centralizado
     const [errors, setErrors] = useState({ email: "", password: "" });
 
@@ -24,7 +21,6 @@ function PaginaLogin() {
             handleLogin();
         }
     };
-
 
     const handleLogin = async () => {
         // Resetar estados antes da tentativa
@@ -43,17 +39,16 @@ function PaginaLogin() {
             if (response.status === 200) {
                 navigate(`/logado?u=${data?.id}`);
             } else {
-                // CORREÇÃO AQUI: Tipagem do mapa de erros para aceitar indexação por número
                 const errorMap: { [key: number]: { email?: string; password?: string } } = {
                     400: { email: "Email é obrigatório" },
                     402: { password: "Senha é obrigatória" },
                     404: { email: "Email não cadastrado" },
                     401: { password: "Senha incorreta" },
                 };
-
+                
                 // Verificamos se o status retornado existe no nosso mapa
                 const errorData = errorMap[response.status];
-
+                console.log(errorMap)
                 if (errorData) {
                     // Atualiza apenas os campos que vieram no erro (usando spread para manter os outros como "")
                     setErrors(prev => ({ ...prev, ...errorData }));
@@ -81,7 +76,7 @@ function PaginaLogin() {
                         <div id="login">
                             <input
                                 type="text"
-                                className={`inputTextEmail ${errors.email ? "input-error" : ""}`}
+                                className={`inputTextEmail ${errors.email ? "input-error-login" : ""}`}
                                 name="email"
                                 id="email"
                                 placeholder="Email ou telefone"
@@ -90,7 +85,7 @@ function PaginaLogin() {
                                 onKeyDown={handleKeyDown}
                                 disabled={isLoading}
                             />
-                            <div className={`bordaInputPassword ${errors.password ? "input-error" : ""}`} >
+                            <div className={`bordaInputPassword ${errors.password ? "input-error-login" : ""}`} >
                                 <input
                                     type={mostrarSenha ? "text" : "password"}
                                     className="inputText"

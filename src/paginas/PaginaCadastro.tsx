@@ -1,5 +1,5 @@
-//como estamos pegando o id na linha 42 , se "result" é igual a "reponse.json" , e "response" é os dados que mandamos(post) para o banco. E o id é criado no banco, como que estamos pegando esse id , se não fizemos um get no banco? 
 import { useRef } from 'react'
+import { useNavigate } from 'react-router-dom';
 import './PaginaCadastro.css'
 import Rodape from '../components/Rodape'
 import LogoCabecalho from '../components/LogoCabecalho'
@@ -21,10 +21,6 @@ interface FormValues {
     genero: 'masculino' | 'feminino' | 'personalizado' | '';
 }
 
-const diaAtual = new Date().getDate();
-const mesAtual = new Date().getMonth() + 1; // getMonth() retorna 0-11, então adicionamos 1
-const anoAtual = new Date().getFullYear();
-
 const schema = yup.object().shape({
     nome: yup.string().required('Nome é obrigatório'),
     sobrenome: yup.string().required('Sobrenome é obrigatório'),
@@ -34,7 +30,7 @@ const schema = yup.object().shape({
     diaNascimento: yup.number().required('Dia é obrigatório'),
     mesNascimento: yup.number().required('Mês é obrigatório'),
     anoNascimento: yup.number().required('Ano é obrigatório')
-        .max(2021, 'Data incorreta'),
+        .max(new Date().getFullYear() - 5, 'Data incorreta'), // Mínimo 5 anos de idade
     genero: yup.string().oneOf(['masculino', 'feminino', 'personalizado', ''], 'Gênero inválido').required('Gênero é obrigatório'),
 });
 
@@ -50,37 +46,34 @@ const getMonths = () => [
 const getYears = () => Array.from({ length: 121 }, (_, i) => (new Date().getFullYear() - i).toString())
 
 const PaginaCadastro = () => {
+    const navigate = useNavigate();
+     const inputFileRef = useRef<HTMLInputElement>(null);
     const {
         register,
         handleSubmit,
         setValue,
         watch,
-        formState: { errors },
+        formState: { errors, isSubmitting },
         setError,
     } = useForm<FormValues>({
         resolver: yupResolver(schema), // Integração do Yup com o RHF
         mode: 'onBlur',
         defaultValues: {
             genero: '',
-            diaNascimento: diaAtual,
-            mesNascimento: mesAtual,
-            anoNascimento: anoAtual,
+            diaNascimento: new Date().getDate(),
+            mesNascimento: new Date().getMonth() + 1,
+            anoNascimento: new Date().getFullYear(),
         },
     })
 
-    const convertToBase64 = (file: File): Promise<string> => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader()
-            reader.readAsDataURL(file)
-            reader.onload = () => resolve(reader.result as string)
-            reader.onerror = (error) => reject(error)
-        })
-    }
-
-    const inputFileRef = useRef<HTMLInputElement | undefined>(undefined)
     const imagemCarregada = watch('imagem')
 
     const onSubmit: SubmitHandler<FormValues> = async (data) => {
+
+        const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+        // Ativa o delay de 2 segundos
+        await delay(1500);
+        // Formata a data para dd/mm/aaaa conforme esperado pelo backend
         const postData = {
             nome: data.nome,
             sobrenome: data.sobrenome,
@@ -89,81 +82,76 @@ const PaginaCadastro = () => {
             imagem: data.imagem,
             genero: data.genero,
             data_nascimento: `${data.diaNascimento}/${data.mesNascimento}/${data.anoNascimento}`
-        }
-        console.log(postData)
+        };
 
         try {
-            // Envia os dados como multipart/form-data
             const response = await fetch('http://localhost:3000/usuario', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(postData),
-            })
-            if (!response.ok) {
-                const errorData = await response.json()
-                
-                // 3. Tratamento de erros específicos da API (ex: email único)
-                if (errorData.errors[0].type === "is-valid-date") {
-                    setError('anoNascimento', {
-                        type: 'manual',
-                        message: errorData.errors[0].message,
-                    })
-                } else if (errorData.errors[0].type === 'email') {
+            });
 
-                    setError('email', {
+            if (!response.ok) {
+                const errorData = await response.json();
+
+                // Mapeamento do primeiro erro retornado pela API
+                if (errorData.errors && errorData.errors.length > 0) {
+                    const erroAPI = errorData.errors[0];
+                    // Se o erro for na data, mapeamos para o campo de ano no front
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    const fieldMapping: any = erroAPI.path === 'data_nascimento' ? 'anoNascimento' : erroAPI.path;
+
+                    setError(fieldMapping, {
                         type: 'manual',
-                        message: errorData.errors[0].message,
-                    })
-                } else {
-                    // Tratar outros erros genéricos da API
-                    console.error('Erro na API:', errorData.message)
+                        message: erroAPI.message,
+                    });
                 }
-                return
+                return;
             }
 
-            // Sucesso no cadastro
-            alert('Cadastro realizado com sucesso, faça o login para se conectar')
-            window.location.href = "/"
+            alert('Cadastro realizado com sucesso! Faça o login para continuar.');
+            navigate('/');
         } catch (error) {
-            console.error('Erro na requisição:', error)
-            alert('Ocorreu um erro ao tentar cadastrar. Tente novamente.')
+            alert('Erro de conexão com o servidor. Tente novamente mais tarde.');
+            console.error(error)
         }
-    }
+    };
 
-//   const onSubmit = async (postaData) => {
-//     try {
-//       // 2. Enviar dados para a API
-//       await axios.post('http://localhost:3000/usuario', postaData)
-//       alert('Cadastro realizado com sucesso!')
-//     } catch (error) {
-//       // 3. Lidar com erros da API e usar setError
-//       if (error.response && error.response.data && error.response.data.error) {
-//         const { field, message } = error.response.data.error
-//         if (field && message) {
-//           // Define o erro no campo específico do formulário
-//           setError(field, {
-//             type: 'manual',
-//             message: message,
-//           })
-//         } else {
-//           // Erro geral
-//           alert(message)
-//         }
-//       } else {
-//         alert('Ocorreu um erro ao cadastrar.')
-//       }
-//     }
-//   }
+    //   const onSubmit = async (postaData) => {
+    //     try {
+    //       // 2. Enviar dados para a API
+    //       await axios.post('http://localhost:3000/usuario', postaData)
+    //       alert('Cadastro realizado com sucesso!')
+    //     } catch (error) {
+    //       // 3. Lidar com erros da API e usar setError
+    //       if (error.response && error.response.data && error.response.data.error) {
+    //         const { field, message } = error.response.data.error
+    //         if (field && message) {
+    //           // Define o erro no campo específico do formulário
+    //           setError(field, {
+    //             type: 'manual',
+    //             message: message,
+    //           })
+    //         } else {
+    //           // Erro geral
+    //           alert(message)
+    //         }
+    //       } else {
+    //         alert('Ocorreu um erro ao cadastrar.')
+    //       }
+    //     }
+    //   }
 
-    const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0]
+    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
         if (file) {
-            const base64String = await convertToBase64(file)
-            setValue('imagem', base64String, { shouldValidate: true }) // Define o valor no hook form
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+                setValue('imagem', reader.result as string, { shouldValidate: true });
+            };
         }
-    }
+    };
 
     return (
         <div>
@@ -181,7 +169,7 @@ const PaginaCadastro = () => {
                             <div id='cadastroNome'>
                                 <div className='inputEError'>
                                     <input
-                                        className={`input-field ${errors.nome ? 'inputCadastroNomeErro' : 'inputCadastroNome'}`}
+                                        className={`inputCadastroNome ${errors.nome ? 'bordaErroCadastro' : ''}`}
                                         type="text"
                                         placeholder='Nome'
                                         {...register('nome')} />
@@ -190,7 +178,7 @@ const PaginaCadastro = () => {
                                 <div>
                                     <div className='inputEError'>
                                         <input
-                                            className={`input-field ${errors.sobrenome ? 'inputCadastroNomeErro' : 'inputCadastroNome'}`}
+                                            className={`inputCadastroNome ${errors.nome ? 'bordaErroCadastro' : ''}`}
                                             type="text"
                                             placeholder='Sobrenome'
                                             {...register('sobrenome')} />
@@ -211,18 +199,18 @@ const PaginaCadastro = () => {
                                 </div>
                                 <div>
                                     <span id="containerData" data-type="selectors">
-                                        <select className={`input-field ${errors.anoNascimento ? 'seletoresErro' : 'seletores'}`} title='Dia' {...register('diaNascimento')}>
+                                        <select className={`seletores ${errors.anoNascimento ? 'bordaErroCadastro' : ''}`} title='Dia' {...register('diaNascimento')}>
                                             {getDays().map((day) => (
                                                 <option key={day} value={day}>{day}</option>
                                             ))}
                                         </select>
-                                        <select className={`input-field ${errors.anoNascimento ? 'seletoresErro' : 'seletores'}`} title='Mês'{...register('mesNascimento')}>
+                                        <select className={`seletores ${errors.anoNascimento ? 'bordaErroCadastro' : ''}`} title='Mês'{...register('mesNascimento')}>
 
                                             {getMonths().map((month) => (
                                                 <option key={month.value} value={month.value}>{month.label}</option>
                                             ))}
                                         </select>
-                                        <select className={`input-field ${errors.anoNascimento ? 'seletoresErro' : 'seletores'}`} title='Ano' {...register('anoNascimento')}>
+                                        <select className={`seletores ${errors.anoNascimento ? 'bordaErroCadastro' : ''}`} title='Ano' {...register('anoNascimento')}>
 
                                             {getYears().map((year) => (
                                                 <option key={year} value={year}>{year}</option>
@@ -260,11 +248,11 @@ const PaginaCadastro = () => {
                                 </div>
                                 <div id='containerEmailESenha'>
                                     <div className='inputEError'>
-                                        <input className={`input-field ${errors.email ? 'inputEmailESenhaErro' : 'inputEmailESenha'}`} placeholder='Celular ou email' type="email" {...register('email')} />
+                                        <input className={`inputEmailESenha ${errors.email ? 'bordaErroCadastro' : ''}`} placeholder='Celular ou email' type="email" {...register('email')} />
                                         {errors.email && <span style={{ fontSize: 10, color: 'red', position: 'absolute', marginTop: 41 }}>{errors.email.message}</span>}
                                     </div>
                                     <div className='inputEError'>
-                                        <input className={`input-field ${errors.senha ? 'inputEmailESenhaErro' : 'inputEmailESenha'}`} type="text" placeholder='Nova senha' {...register('senha')} />
+                                        <input className={`inputEmailESenha ${errors.senha ? 'bordaErroCadastro' : ''}`} type="text" placeholder='Nova senha' {...register('senha')} />
                                         {errors.senha && <span style={{ fontSize: 10, color: 'red', position: 'absolute', marginTop: 40 }}>{errors.senha.message}</span>}
                                     </div>
                                 </div>
@@ -275,8 +263,8 @@ const PaginaCadastro = () => {
                                     <a className="linkDoTexto" href="/legal/terms/update" target="_blank">Termos</a>, <a className="linkDoTexto" href="/about/privacy/update" target="_blank">Política de Privacidade</a> e <a className="linkDoTexto" href="/policies/cookies/" target="_blank">Política de Cookies</a>. Você poderá receber notificações por SMS e cancelar isso quando quiser.</p>
                                 <div id='containerBotaoELink'>
 
-                                    <button id='botaoCadastrar' type="submit">
-                                        Cadastrar
+                                    <button id='botaoCadastrar' type="submit" disabled={isSubmitting}>
+                                        {isSubmitting ? "Carregando..." : "Cadastre-se "}
                                     </button>
                                     <a id='linkConta' href="/" aria-label="Já tem uma conta?" >Já tem uma conta?</a>
                                 </div>

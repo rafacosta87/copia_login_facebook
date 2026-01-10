@@ -120,11 +120,12 @@ input.inputTextEmail {
     border: solid 1px #dddfe2;
 }
 
-.input-error {
+.input-error-login {
     border-color: red !important;
 }
 
-input.inputTextEmail:focus, div.bordaInputPassword:focus-within {
+input.inputTextEmail:focus,
+div.bordaInputPassword:focus-within {
     border-color: #0866ff;
     box-shadow: 0 0 0 2px #e7f3ff;
     caret-color: #0866ff;
