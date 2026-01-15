@@ -47,7 +47,7 @@ const getYears = () => Array.from({ length: 121 }, (_, i) => (new Date().getFull
 
 const PaginaCadastro = () => {
     const navigate = useNavigate();
-     const inputFileRef = useRef<HTMLInputElement>(null);
+    const inputFileRef = useRef<HTMLInputElement>(null);
     const {
         register,
         handleSubmit,
@@ -69,7 +69,6 @@ const PaginaCadastro = () => {
     const imagemCarregada = watch('imagem')
 
     const onSubmit: SubmitHandler<FormValues> = async (data) => {
-
         const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
         // Ativa o delay de 2 segundos
         await delay(1500);
@@ -83,14 +82,12 @@ const PaginaCadastro = () => {
             genero: data.genero,
             data_nascimento: `${data.diaNascimento}/${data.mesNascimento}/${data.anoNascimento}`
         };
-
         try {
             const response = await fetch('http://localhost:3000/usuario', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(postData),
             });
-
             if (!response.ok) {
                 const errorData = await response.json();
 
@@ -108,7 +105,6 @@ const PaginaCadastro = () => {
                 }
                 return;
             }
-
             alert('Cadastro realizado com sucesso! Faça o login para continuar.');
             navigate('/');
         } catch (error) {
@@ -155,7 +151,6 @@ const PaginaCadastro = () => {
 
     return (
         <div>
-
             <div id="containerPrincipalCadastro">
                 <LogoCabecalho />
                 <div id="containerCadastro">
