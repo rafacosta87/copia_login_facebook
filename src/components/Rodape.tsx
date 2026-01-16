@@ -1,39 +1,26 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-
 import { useContext, useState } from "react"
 import "./Rodape.css"
-import Modal from "./Modal"
+import Modal from "./Modal.tsx"
 import { IdiomaContexto } from "./IdiomaContexto"
-
-const idiomasRodape = [
-    "Português (Brasil)",
-    "English (US)",
-    "Español",
-    "Français (France)",
-    "Italiano",
-    "Deutsch",
-    "العربية",
-    "हिन्दी",
-    "中文(简体)",
-    "日本語",
-]
+import { idiomasRodape } from "./DadosIdiomas.tsx"
 
 function Rodape() {
     const contexto = useContext(IdiomaContexto)
     const [openModal, setOpenModal] = useState(false)
     const idiomaSelecionado = contexto?.idiomaSelecionado                           //esse "?" é pq a variavel pode ser undefined
     const setIdiomaSelecionado = contexto?.setIdiomaSelecionado
+    const anoAtual = new Date().getFullYear();
 
     return (
         <>
-            <div id="main">
+            <footer id="main">
                 {
                     openModal &&
                     <Modal onClose={() => setOpenModal(false)} />
                 }
                 <div id="conteudo" >
                     <ul className="primeiraLista" data-nocookies="1">
-
                         {idiomasRodape.map((idioma, idx) => {
                             return <li><a
                                 className="linksListaUm"
@@ -81,7 +68,7 @@ function Rodape() {
                             <li><a className="linksListaDois" href="https://developers.facebook.com/?ref=pf" title="Desenvolver em nossa plataforma.">Desenvolvedores</a></li>
                             <li><a className="linksListaDois" href="/careers/?ref=pf" title="Dê um passo adiante na sua carreira em nossa incrível empresa.">Carreiras</a></li>
                             <li><a className="linksListaDois" href="/policies/cookies/" title="Saiba mais sobre cookies e o Facebook" data-nocookies="1">Cookies</a></li>
-                            <li><a className="linksListaDois" data-nocookies="1" href="https://www.facebook.com/help/568137493302217" title="Saiba mais sobre as escolhas para anúncios.">Escolhas para anúncios <i className="iconePlay">▷</i></a></li>
+                            <li><a className="linksListaDois" data-nocookies="1" href="https://www.facebook.com/help/568137493302217" title="Saiba mais sobre as escolhas para anúncios.">Escolhas para anúncios </a></li>
                             <li><a className="linksListaDois" data-nocookies="1" href="/policies?ref=pf" /*accesskey="9"*/ title="Leia os nossos termos e políticas.">Termos</a></li>
                             <li><a className="linksListaDois" href="/help/?ref=pf" /*accesskey="0"*/ title="Acesse nossa Central de Ajuda.">Ajuda</a></li>
                             <li><a className="linksListaDois" href="https://www.facebook.com/help/637205020878504" title="Acesse nosso aviso de carregamento de contatos e não usuários.">Upload de contatos e não usuários</a></li>
@@ -92,11 +79,11 @@ function Rodape() {
 
                     <div className="mvl copyright">
                         <div>
-                            <span> Meta © 2025</span>
+                            <span> Meta © {anoAtual}</span>
                         </div>
                     </div>
                 </div>
-            </div>
+            </footer>
         </>
     )
 }

@@ -16,24 +16,41 @@
     box-sizing: border-box;
 }
 
-ul.primeiraLista {
-    padding-top: 0px;
+ul.primeiraLista,
+ul.segundaLista {
     align-items: center;
     display: flex;
     flex-wrap: wrap;
     list-style-type: none;
     padding-left: 0;
+}
+
+ul.primeiraLista {
+    padding-top: 0px;
     column-gap: 10px;
     padding-bottom: 0;
     margin-bottom: 8px;
 }
 
-a.linksListaUm {
+ul.segundaLista {
+    column-gap: 20px;
+    line-height: 1.6;
+}
+
+a.linksListaUm,
+a.linksListaDois {
     font-size: 12px;
-    border-width: 0 0 0 1px;
     display: inline-block;
     font-weight: 400;
     color: #8a8d91;
+}
+
+a.linksListaUm {
+    border-width: 0 0 0 1px;
+}
+
+a.linksListaDois {
+    vertical-align: top;
 }
 
 #borda {
@@ -43,25 +60,6 @@ a.linksListaUm {
     margin-bottom: 8px;
 }
 
-#containerListaDois {}
-
-ul.segundaLista {
-    column-gap: 20px;
-    align-items: center;
-    display: flex;
-    flex-wrap: wrap;
-    list-style-type: none;
-    line-height: 1.6;
-    padding-left: 0;
-}
-
-a.linksListaDois {
-    font-size: 12px;
-    vertical-align: top;
-    display: inline-block;
-    font-weight: 400;
-    color: #8a8d91;
-}
 
 #buttonMais {
     color: #676e7d;
@@ -82,11 +80,4 @@ a.linksListaDois {
     text-decoration: none;
     font-weight: 700;
     cursor: default;
-}
-
-.iconePlay {
-    font-size: 20px;
-    align-self: flex-end;
-    color: #3b5998;
-    font-weight: bolder;
 }

@@ -14,6 +14,19 @@ export const idiomasSugeridos = [
     "Français (France)",
 ];
 
+export const idiomasRodape = [
+    "Português (Brasil)",
+    "English (US)",
+    "Español",
+    "Français (France)",
+    "Italiano",
+    "Deutsch",
+    "العربية",
+    "हिन्दी",
+    "中文(简体)",
+    "日本語",
+]
+
 export const idiomas = [
     { nome: 'Af-Soomaali', categoria: ["África e Oriente Médio"] },
     { nome: 'Afrikaans', categoria: ["África e Oriente Médio"] },
