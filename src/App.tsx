@@ -1,6 +1,7 @@
 import PaginaLogin from './paginas/PaginaLogin.tsx'
 import PaginaCadastro from './paginas/PaginaCadastro.tsx'
 import PaginaLogado from './paginas/PaginaLogado.tsx'
+import PaginaRecuperarSenha from './paginas/PaginaRecuperarSenha.tsx'
 import IdiomaProvedor from './components/IdiomaProvedor'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
@@ -24,6 +25,11 @@ function App() {
           <Route path='/logado' element={
             <IdiomaProvedor>
               <PaginaLogado />
+            </IdiomaProvedor>
+          } />
+          <Route path='/recuperar/senha' element={
+            <IdiomaProvedor>
+              <PaginaRecuperarSenha />
             </IdiomaProvedor>
           } />
         </Routes>

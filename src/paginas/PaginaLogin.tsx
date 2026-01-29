@@ -45,7 +45,7 @@ function PaginaLogin() {
                     404: { email: "Email não cadastrado" },
                     401: { password: "Senha incorreta" },
                 };
-                
+
                 // Verificamos se o status retornado existe no nosso mapa
                 const errorData = errorMap[response.status];
                 console.log(errorMap)
@@ -114,7 +114,9 @@ function PaginaLogin() {
                             >
                                 {isLoading ? "Entrando..." : "Entrar"}
                             </button>
-                            <a className="novaSenha" href="https://www.facebook.com/recover/initiate/?privacy_mutation_token=eyJ0eXBlIjowLCJjcmVhdGlvbl90aW1lIjoxNzU4MzM1ODY0LCJjYWxsc2l0ZV9pZCI6MzgxMjI5MDc5NTc1OTQ2fQ%3D%3D&amp;ars=facebook_login&amp;next">Esqueceu a senha?</a>
+                            <a className="novaSenha" href="/recuperar/senha">
+                                Esqueceu a senha?
+                            </a>
                             <hr id="borderTopButton" />
                             <a href="/cadastro">
                                 <button className="buttonConta" type="submit" >Criar nova conta</button>
