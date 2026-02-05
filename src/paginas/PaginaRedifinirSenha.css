@@ -1,0 +1,40 @@
+.conteudoRedefinirSenha {
+    background-color: #f2f4f7;
+    padding: 100px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+.formRedefinirSenha {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px #0000001a, 0 8px 16px #0000001a;
+    margin: auto;
+    width: 500px;
+    background-color: rgb(255, 255, 255);
+    padding-top: 10px;
+    box-sizing: border-box;
+}
+
+.botaoRedefinirForm {
+  /* padding: 0 20px; */
+  padding-bottom: 0;
+  padding-top: 0;
+  width: 160px;
+  background-color: #1877f2;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  line-height: 36px;
+  margin-left: 8px;
+  color: #fff;
+  font-weight: 700;
+  transition: background-color 0.2s;
+}
+
+.botaoRedefinirForm:hover {
+  background-color: #166fe5;
+  cursor: pointer;
+}

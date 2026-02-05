@@ -9,17 +9,18 @@ const PaginaRecuperarSenha = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [isLoading, setIsLoading] = useState(false);
+    const [isSearching, setIsSearching] = useState(false);
     // Estado de erro centralizado
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [errors, setErrors] = useState({ email: "", password: "" });
-
     const navigate = useNavigate();
-
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
             handleLogin();
         }
     };
+    const [emailRecuperacao, setEmailRecuperacao] = useState("");
+    const [erroBusca, setErroBusca] = useState("")
 
     const handleLogin = async () => {
         // Resetar estados antes da tentativa
@@ -62,6 +63,38 @@ const PaginaRecuperarSenha = () => {
             setIsLoading(false);
         }
     };
+
+    const handleSolicitarSenha = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setErroBusca(""); // Limpa erros antigos ao tentar de novo
+
+        setIsSearching(true);
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        try {
+            const response = await fetch("http://localhost:3000/esqueceu-senha", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email: emailRecuperacao }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // EXIBIÇÃO POR ALERT
+                alert("E-mail enviado! Verifique sua caixa de entrada para redefinir a senha.");
+                setEmailRecuperacao(""); // Limpa o campo após o sucesso
+            } else {
+                // Se não for OK (400 ou 404), exibe a mensagem no estado erroBusca
+                setErroBusca(data.message || "Ocorreu um erro inesperado.");
+            }
+        } catch (err) {
+            setErroBusca("Erro de conexão com o servidor.");
+            console.log(err)
+        } finally {
+            setIsSearching(false);
+        }
+    };
+
     return (
         <div className='containerRecuoerarSenha'>
             <div className="containerCabecalhoForm">
@@ -119,14 +152,26 @@ const PaginaRecuperarSenha = () => {
                             type="text"
                             className='inputForm'
                             placeholder='Email ou número de celular'
+                            value={emailRecuperacao}
+                            onChange={(e) => setEmailRecuperacao(e.target.value)}
                         />
+                        {erroBusca && (
+                            <span className='erroBuscaForm'>
+                                {erroBusca}
+                            </span>
+                        )}
                     </div>
+
                     <div className='containerBotoesForm'>
-                        <button className='botaoCancelarForm'>
+                        <button
+                            type="button"
+                            className='botaoCancelarForm'
+                            onClick={() => navigate('/')}
+                        >
                             Cancelar
                         </button>
-                        <button className='botaoPesquisarForm'>
-                            Pesquisar
+                        <button className='botaoPesquisarForm' onClick={handleSolicitarSenha} disabled={isSearching}>
+                            {isSearching ? "Enviando..." : "Pesquisar"}
                         </button>
                     </div>
                 </form>

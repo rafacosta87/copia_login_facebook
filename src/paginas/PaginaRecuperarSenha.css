@@ -132,7 +132,8 @@
   .botaoCabecalho {
     margin-right: 15px;
   }
-  .mensagemErro{
+
+  .mensagemErro {
     margin-left: -10px;
     margin-top: -15px;
   }
@@ -171,6 +172,8 @@
   margin: 16px;
   width: 468px;
   color: #1c1e21;
+  position: relative;        /*mexemos nessa linha*/
+
 }
 
 .textoForm {
@@ -184,13 +187,22 @@
 .inputForm {
   font-size: 17px;
   height: auto;
-  margin-bottom: 0;
+  margin-bottom: 30px;         /*mexemos aqui*/
   padding: 16px 0 16px 16px;
   width: 444px;
   border-radius: 6px;
   border: 1px solid #CCD0D5;
   background-color: #fff;
   color: #1c1e21;
+}
+                              /*mexemos aqui*/
+.erroBuscaForm {
+    color: #f02849;
+    font-size: 13px;
+    position: absolute; /* Tira o elemento do fluxo, não empurra nada */
+    bottom: 0;         /* Cola no fundo do containerConteudoForm */
+    left: 5px;
+    white-space: nowrap; /* Garante que fique em uma linha só */
 }
 
 .containerBotoesForm {
@@ -218,7 +230,10 @@
 }
 
 .botaoPesquisarForm {
-  padding: 0 20px;
+  /* padding: 0 20px; */
+  width: 120px;
+  padding-bottom: 0;
+  padding-top: 0;
   background-color: #1877f2;
   border: none;
   border-radius: 6px;
