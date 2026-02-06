@@ -57,10 +57,10 @@ const PaginaRedefinirSenha = () => {
         <div className='containerRecuoerarSenha'>
                 <LogoCabecalho />
             <div className='conteudoRedefinirSenha'>
-                <form className='formRedefinirSenha' onSubmit={handleRedefinir} style={{ paddingBottom: '20px' }}>
+                <form className='formRedefinirSenha' onSubmit={handleRedefinir} >
                     <h2 className="tituloForm">Escolha uma nova senha</h2>
 
-                    <div className='containerConteudoForm' style={{ position: 'relative', paddingBottom: '30px' }}>
+                    <div className='containerConteudoForm' >
                         <p className='textoForm'>Crie uma senha forte com pelo menos 6 caracteres.</p>
 
                         <input
@@ -82,7 +82,7 @@ const PaginaRedefinirSenha = () => {
 
                         {/* Mensagem de Erro Posicionada */}
                         {erro && (
-                            <span className="erroBuscaForm" style={{ bottom: '15px' }}>
+                            <span className="erroBuscaForm" >
                                 {erro}
                             </span>
                         )}
