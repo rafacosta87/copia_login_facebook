@@ -1,0 +1,133 @@
+.containerCabecalhoForm {
+  height: 56px;
+  width: 100%;
+  color: #0866FF;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: row;
+  z-index: 100;
+  align-items: center;
+  /* Centraliza verticalmente o conteúdo principal */
+  overflow: visible;
+  /* Garante que o erro "pendurado" seja visível */
+}
+
+.iconeCabecalho {
+  margin-left: 30px;
+}
+
+.inputRecuperarSenha {
+  width: 188px;
+  height: 40px;
+  padding: 10px;
+  outline: none;
+  border: 1px solid #CED0D4;
+  color: #050505;
+  border-radius: 6px;
+  font-weight: 400;
+  background-color: transparent;
+  box-sizing: border-box;
+  text-align: start;
+  font-size: 16px;
+}
+
+.inputRecuperarSenha:hover {
+  border-color: #65676B;
+}
+
+.inputRecuperarSenha:focus {
+  border-color: hsl(214, 89%, 52%);
+}
+
+.inputRecuperarSenha::placeholder {
+  color: #65676B;
+  transition: color 0.3s ease;
+}
+
+.inputRecuperarSenha:focus::placeholder {
+  color: #CED0D4;
+}
+
+.inputsELinks {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}
+
+.grupoInput {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  /* Necessário para posicionar o erro de forma absoluta se preferir */
+}
+
+/* Estilização da mensagem de erro */
+.mensagemErro {
+  color: #f02849;
+  /* Vermelho padrão de erro */
+  font-size: 12px;
+  position: absolute;
+  /* Tira o erro do fluxo para não aumentar a altura do cabeçalho */
+  top: 50px;
+  /* Posiciona logo abaixo do input (que tem 40px) */
+  margin-left: 5px;
+  white-space: nowrap;
+  /* Evita que o erro quebre linha */
+}
+
+.botaoCabecalho {
+  width: 68px;
+  height: 40px;
+  background-color: #1877f2;
+  font-weight: 700;
+  color: white;
+  font-size: 15px;
+  padding: 12px;
+  border-radius: 6px;
+  line-height: 1.34px;
+  box-sizing: border-box;
+  border: none;
+  transition: background-color 0.2s;
+  margin-right: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.botaoCabecalho:hover {
+  background-color: #166fe5;
+  cursor: pointer;
+  /* Versão mais escura da cor */
+}
+
+.linkCabecalho {
+  color: #216FDB;
+  font-size: .9375rem;
+  line-height: 1.3333;
+  margin-right: 30px;
+  font-weight: 600;
+}
+
+@media (max-width: 949px) {
+  .inputRecuperarSenha {
+    display: none;
+    /* Esconde todo o grupo de inputs, botão e link */
+  }
+
+  .linkCabecalho {
+    display: none;
+    /* Esconde todo o grupo de inputs, botão e link */
+  }
+
+  .botaoCabecalho {
+    margin-right: 15px;
+  }
+
+  .mensagemErro {
+    margin-left: -10px;
+    margin-top: -15px;
+  }
+}

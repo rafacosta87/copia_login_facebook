@@ -12,7 +12,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    margin-bottom: 40px;
 }
 
 /* O "Card" branco do erro */
@@ -69,5 +69,8 @@
     }
     .tituloErro {
         font-size: 22px;
+    }
+    .textoErro {
+        font-size: 16px;
     }
 }
