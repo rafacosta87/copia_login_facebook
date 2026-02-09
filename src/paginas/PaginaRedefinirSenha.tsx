@@ -3,6 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import './PaginaRedifinirSenha.css'
 import LogoCabecalho from '../components/LogoCabecalho';
 import Rodape from '../components/Rodape';
+import PaginaErro from '../components/PaginaErro';
 
 const PaginaRedefinirSenha = () => {
     const [searchParams] = useSearchParams();
@@ -13,6 +14,16 @@ const PaginaRedefinirSenha = () => {
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
+    if (!token) {
+        return (
+            <PaginaErro
+                titulo="Link de Redefinição Inválido"
+                mensagem="Este link expirou ou já foi utilizado. Por favor, solicite uma nova recuperação de senha."
+                textoBotao="Solicitar Nova Senha"
+                destinoBotao="/recuperar/senha"
+            />
+        );
+    }
 
     const handleRedefinir = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -55,26 +66,25 @@ const PaginaRedefinirSenha = () => {
 
     return (
         <div className='containerRecuoerarSenha'>
-                <LogoCabecalho />
+            <LogoCabecalho />
             <div className='conteudoRedefinirSenha'>
                 <form className='formRedefinirSenha' onSubmit={handleRedefinir} >
                     <h2 className="tituloForm">Escolha uma nova senha</h2>
 
-                    <div className='containerConteudoForm' >
+                    <div className='conteudoFormRedefinir' >
                         <p className='textoForm'>Crie uma senha forte com pelo menos 6 caracteres.</p>
 
                         <input
                             type="password"
-                            className='inputForm'
+                            className='inputFormRedefinir'
                             placeholder='Nova senha'
                             value={novaSenha}
                             onChange={(e) => setNovaSenha(e.target.value)}
-                            style={{ marginBottom: '15px' }}
                         />
 
                         <input
                             type="password"
-                            className='inputForm'
+                            className='inputFormRedefinir'
                             placeholder='Confirme a nova senha'
                             value={confirmarSenha}
                             onChange={(e) => setConfirmarSenha(e.target.value)}
@@ -82,7 +92,7 @@ const PaginaRedefinirSenha = () => {
 
                         {/* Mensagem de Erro Posicionada */}
                         {erro && (
-                            <span className="erroBuscaForm" >
+                            <span className="erroRedefinirForm" >
                                 {erro}
                             </span>
                         )}
@@ -95,7 +105,7 @@ const PaginaRedefinirSenha = () => {
                     </div>
                 </form>
             </div>
-                <Rodape />
+            <Rodape />
         </div>
     );
 };

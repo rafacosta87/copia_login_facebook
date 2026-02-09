@@ -1,21 +1,21 @@
 .conteudoRedefinirSenha {
-    background-color: #f2f4f7;
-    padding: 100px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 50px;
+  background-color: #f2f4f7;
+  padding: 100px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 50px;
 }
 
 .formRedefinirSenha {
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px #0000001a, 0 8px 16px #0000001a;
-    margin: auto;
-    width: 500px;
-    background-color: rgb(255, 255, 255);
-    padding-top: 10px;
-    box-sizing: border-box;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px #0000001a, 0 8px 16px #0000001a;
+  margin: auto;
+  width: 500px;
+  background-color: rgb(255, 255, 255);
+  padding-top: 10px;
+  box-sizing: border-box;
 }
 
 .botaoRedefinirForm {
@@ -37,4 +37,43 @@
 .botaoRedefinirForm:hover {
   background-color: #166fe5;
   cursor: pointer;
+}
+
+.inputFormRedefinir {
+  font-size: 17px;
+  height: auto;
+  margin-bottom: 13px;
+  padding: 16px 0 16px 16px;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 6px;
+  border: 1px solid #CCD0D5;
+  background-color: #fff;
+  color: #1c1e21;
+}
+
+.conteudoFormRedefinir {
+  margin: 16px;
+  max-width: 468px;
+  color: #1c1e21;
+  position: relative;
+  /*mexemos nessa linha*/
+  padding-bottom: 25px;
+}
+
+.erroRedefinirForm {
+  color: #f02849;
+  font-size: 13px;
+  position: absolute;
+  bottom: 0;
+  /* Cola no fundo do containerConteudoForm */
+  left: 5px;
+  white-space: nowrap;
+}
+
+/* Melhoria: Estilo de carregamento no botão */
+.botaoRedefinirForm:disabled {
+  background-color: #8cb4f5;
+  cursor: not-allowed;
+  opacity: 0.7;
 }

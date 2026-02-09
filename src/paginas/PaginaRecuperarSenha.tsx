@@ -11,7 +11,6 @@ const PaginaRecuperarSenha = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isSearching, setIsSearching] = useState(false);
     // Estado de erro centralizado
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [errors, setErrors] = useState({ email: "", password: "" });
     const navigate = useNavigate();
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -33,9 +32,7 @@ const PaginaRecuperarSenha = () => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, senha: password }),
             });
-
             const data = await response.json();
-
             if (response.status === 200) {
                 navigate(`/logado?u=${data?.id}`);
             } else {
@@ -45,7 +42,6 @@ const PaginaRecuperarSenha = () => {
                     404: { email: "Email não cadastrado" },
                     401: { password: "Senha incorreta" },
                 };
-
                 // Verificamos se o status retornado existe no nosso mapa
                 const errorData = errorMap[response.status];
                 console.log(errorMap)
@@ -76,9 +72,7 @@ const PaginaRecuperarSenha = () => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email: emailRecuperacao }),
             });
-
             const data = await response.json();
-
             if (response.ok) {
                 // EXIBIÇÃO POR ALERT
                 alert("E-mail enviado! Verifique sua caixa de entrada para redefinir a senha.");
@@ -142,7 +136,7 @@ const PaginaRecuperarSenha = () => {
 
             <div className='conteudoRecuperarSenha'>
 
-                <form className='formRecuperarSenha'>
+                <form className='formRecuperarSenha' onSubmit={handleSolicitarSenha}>
                     <h2 className="tituloForm" >Encontre sua conta</h2>
                     <div className='containerConteudoForm'>
                         <p className='textoForm'>
@@ -170,7 +164,7 @@ const PaginaRecuperarSenha = () => {
                         >
                             Cancelar
                         </button>
-                        <button className='botaoPesquisarForm' onClick={handleSolicitarSenha} disabled={isSearching}>
+                        <button type="submit"  className='botaoPesquisarForm' disabled={isSearching}>
                             {isSearching ? "Enviando..." : "Pesquisar"}
                         </button>
                     </div>

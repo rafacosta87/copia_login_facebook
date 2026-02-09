@@ -5,6 +5,7 @@ import PaginaRecuperarSenha from './paginas/PaginaRecuperarSenha.tsx'
 import IdiomaProvedor from './components/IdiomaProvedor'
 import PaginaRedefinirSenha from './paginas/PaginaRedefinirSenha.tsx'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import PaginaErro from './components/PaginaErro.tsx'
 
 function App() {
 
@@ -37,6 +38,14 @@ function App() {
             <IdiomaProvedor>
               <PaginaRedefinirSenha />
             </IdiomaProvedor>
+          } />
+          <Route path='/erro' element={
+            <IdiomaProvedor>
+              <PaginaErro />
+            </IdiomaProvedor>
+          } />
+          <Route path="*" element={
+            <PaginaErro />
           } />
         </Routes>
       </Router>

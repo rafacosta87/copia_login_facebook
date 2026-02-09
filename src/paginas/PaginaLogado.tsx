@@ -5,6 +5,7 @@ import LogoCabecalho from '../components/LogoCabecalho';
 import Rodape from "../components/Rodape";
 import { CampoPerfil } from '../components/CampoPerfil';
 import './PaginaLogado.css';
+import PaginaErro from '../components/PaginaErro';
 
 interface Usuario {
     nome: string;
@@ -17,6 +18,7 @@ interface Usuario {
 }
 
 function PaginaLogado() {
+    const [erroFatal, setErroFatal] = useState(false);
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const idUsuario = searchParams.get("u");
@@ -33,12 +35,26 @@ function PaginaLogado() {
     const [erros, setErros] = useState<Record<string, string>>({});
 
     const fetchData = async () => {
+        // 1. Validação: se não houver ID na URL, ativa o erro fatal imediatamente
+           if (!idUsuario || idUsuario === "") {
+            setErroFatal(true);
+            return;
+        }
         try {
             const res = await fetch(`http://localhost:3000/usuario/${idUsuario}`);
+
+            // 2. Se o servidor responder 404 (usuário deletado ou ID inexistente)
+            if (res.status === 404) {
+                setErroFatal(true);
+                return;
+            }
+
             const json = await res.json();
             setDadosUsuario(json);
+            setErroFatal(false); // Garante que o erro saia se os dados voltarem
         } catch (err) {
             console.error("Erro ao carregar dados", err);
+            setErroFatal(true); // Erro de conexão ou servidor fora do ar
         }
     };
 
@@ -110,6 +126,17 @@ function PaginaLogado() {
             navigate("/");
         }
     };
+
+    if (erroFatal || !idUsuario || idUsuario === ""){
+        return (
+            <PaginaErro
+                titulo="Perfil não encontrado"
+                mensagem="Não conseguimos localizar as informações deste usuário em nosso sistema."
+                textoBotao="Voltar para o Login"
+                destinoBotao="/"
+            />
+        );
+    }
 
     return (
         <div>

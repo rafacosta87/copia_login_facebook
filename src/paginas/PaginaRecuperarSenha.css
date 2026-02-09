@@ -153,7 +153,10 @@
   border-radius: 8px;
   box-shadow: 0 1px 2px #0000001a, 0 2px 4px #0000001a;
   margin: auto;
-  width: 500px;
+  width: 95%;
+  /* Adaptável para telas pequenas */
+  max-width: 500px;
+  /* Limite para telas grandes */
   background-color: #fff;
   padding-top: 10px;
 }
@@ -170,39 +173,47 @@
 
 .containerConteudoForm {
   margin: 16px;
-  width: 468px;
+  max-width: 468px;
+  /* Ajustado para ser fluido */
   color: #1c1e21;
-  position: relative;        /*mexemos nessa linha*/
-
+  position: relative;
+  /*mexemos nessa linha*/
 }
 
 .textoForm {
   margin-bottom: 16px;
   text-align: left;
   color: #1c1e21;
-  font-size: 17px;
+  font-size: 16.8px;
   line-height: 20px;
 }
 
 .inputForm {
   font-size: 17px;
   height: auto;
-  margin-bottom: 30px;         /*mexemos aqui*/
+  margin-bottom: 30px;
+  /*mexemos aqui*/
   padding: 16px 0 16px 16px;
-  width: 444px;
+  width: 100%;
+  /* Ocupa todo o espaço disponível */
+  box-sizing: border-box;
   border-radius: 6px;
   border: 1px solid #CCD0D5;
   background-color: #fff;
   color: #1c1e21;
 }
-                              /*mexemos aqui*/
+
+/*mexemos aqui*/
 .erroBuscaForm {
-    color: #f02849;
-    font-size: 13px;
-    position: absolute; /* Tira o elemento do fluxo, não empurra nada */
-    bottom: 0;         /* Cola no fundo do containerConteudoForm */
-    left: 5px;
-    white-space: nowrap; /* Garante que fique em uma linha só */
+  color: #f02849;
+  font-size: 13px;
+  position: absolute;
+  /* Tira o elemento do fluxo, não empurra nada */
+  bottom: 0;
+  /* Cola no fundo do containerConteudoForm */
+  left: 5px;
+  white-space: nowrap;
+  /* Garante que fique em uma linha só */
 }
 
 .containerBotoesForm {
@@ -248,4 +259,10 @@
 .botaoPesquisarForm:hover {
   background-color: #166fe5;
   cursor: pointer;
+}
+
+.botaoPesquisarForm:disabled {
+  background-color: #8cb4f5;
+  cursor: not-allowed;
+  opacity: 0.8;
 }

@@ -37,6 +37,7 @@ function PaginaLogin() {
             const data = await response.json();
 
             if (response.status === 200) {
+                localStorage.setItem("usuario_id", data.id); // Salva a sessão
                 navigate(`/logado?u=${data?.id}`);
             } else {
                 const errorMap: { [key: number]: { email?: string; password?: string } } = {

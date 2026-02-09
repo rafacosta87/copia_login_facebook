@@ -1,0 +1,73 @@
+/* Container que ocupa a tela toda para centralizar o conteúdo */
+.containerErro {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f0f2f5; /* Cinza claro padrão Facebook */
+}
+
+/* Área central de conteúdo */
+.conteudoErro {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* O "Card" branco do erro */
+.cardErro {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 500px;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+}
+
+.tituloErro {
+    color: #1c1e21;
+    font-size: 38px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.textoErro {
+    color: #65676b;
+    font-size: 20px;
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* Botão azul estilizado */
+.botaoErro {
+    background-color: #1877f2;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 0 30px;
+    height: 40px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.botaoErro:hover {
+    background-color: #166fe5;
+}
+
+/* Responsividade para celulares */
+@media (max-width: 480px) {
+    .cardErro {
+        padding: 30px 20px;
+    }
+    .tituloErro {
+        font-size: 22px;
+    }
+}
