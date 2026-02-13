@@ -113,31 +113,6 @@ const PaginaCadastro = () => {
         }
     };
 
-    //   const onSubmit = async (postaData) => {
-    //     try {
-    //       // 2. Enviar dados para a API
-    //       await axios.post('http://localhost:3000/usuario', postaData)
-    //       alert('Cadastro realizado com sucesso!')
-    //     } catch (error) {
-    //       // 3. Lidar com erros da API e usar setError
-    //       if (error.response && error.response.data && error.response.data.error) {
-    //         const { field, message } = error.response.data.error
-    //         if (field && message) {
-    //           // Define o erro no campo específico do formulário
-    //           setError(field, {
-    //             type: 'manual',
-    //             message: message,
-    //           })
-    //         } else {
-    //           // Erro geral
-    //           alert(message)
-    //         }
-    //       } else {
-    //         alert('Ocorreu um erro ao cadastrar.')
-    //       }
-    //     }
-    //   }
-
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
@@ -162,7 +137,7 @@ const PaginaCadastro = () => {
                         </div>
                         <form id="formulario" onSubmit={handleSubmit(onSubmit)}>
                             <div id='cadastroNome'>
-                                <div className='inputEError'>
+                                <div className='inputEErro'>
                                     <input
                                         className={`inputCadastroNome ${errors.nome ? 'bordaErroCadastro' : ''}`}
                                         type="text"
@@ -171,7 +146,7 @@ const PaginaCadastro = () => {
                                     {errors.nome && <span className='mensagemError'>{errors.nome.message}</span>}
                                 </div>
                                 <div>
-                                    <div className='inputEError'>
+                                    <div className='inputEErro'>
                                         <input
                                             className={`inputCadastroNome ${errors.nome ? 'bordaErroCadastro' : ''}`}
                                             type="text"
@@ -183,8 +158,8 @@ const PaginaCadastro = () => {
                                 <div id='iconeCamera' title='Foto de Perfil' onClick={() => inputFileRef.current?.click()}>
                                     <input type="file" hidden ref={inputFileRef} accept='image/*' onChange={handleImageChange} />
                                     {imagemCarregada ? <img id="imagemCadastro" src={imagemCarregada} /> : <Camera />}
-                                    <div>
-                                        {errors.imagem && <span style={{ position: "absolute", marginTop: "5px", fontSize: 10, color: "red", marginLeft: -24 }}>{errors.imagem.message}</span>}
+                                    <div className='erroImagem'>
+                                        {errors.imagem && <span >{errors.imagem.message}</span>}
                                     </div>
                                 </div>
                             </div>
@@ -192,7 +167,7 @@ const PaginaCadastro = () => {
                                 <div id='tituloData'>Data de nascimento
                                     <a id="birthday-help" href="#" title="Clique para obter mais informações" role="button"><i></i></a>
                                 </div>
-                                <div>
+                                <div className='dataEErro'>
                                     <span id="containerData" data-type="selectors">
                                         <select className={`seletores ${errors.anoNascimento ? 'bordaErroCadastro' : ''}`} title='Dia' {...register('diaNascimento')}>
                                             {getDays().map((day) => (
@@ -212,10 +187,10 @@ const PaginaCadastro = () => {
                                             ))}
                                         </select>
                                     </span>
+                                    {(errors.diaNascimento || errors.mesNascimento || errors.anoNascimento) && (
+                                        <span className='erroPosicionado'>{errors.anoNascimento?.message} </span>
+                                    )}
                                 </div>
-                                {(errors.diaNascimento || errors.mesNascimento || errors.anoNascimento) && (
-                                    <span style={{ color: "red", position: "absolute", marginTop: "-2px", fontSize: 10 }}>{errors.anoNascimento?.message} </span>
-                                )}
                                 <div id="containerPrincipalGenero">
                                     <div id="tituloGenero">Gênero
                                         <a title="Clique para obter mais informações" href="#" role="button">
@@ -239,16 +214,16 @@ const PaginaCadastro = () => {
                                             </label>
                                         </span>
                                     </div>
-                                    {errors.genero && <span style={{ color: "red", position: "absolute", marginTop: "-2px", fontSize: 10 }}>{errors.genero.message}</span>}
+                                    {errors.genero && <span className='erroPosicionado'>{errors.genero.message}</span>}
                                 </div>
                                 <div id='containerEmailESenha'>
-                                    <div className='inputEError'>
+                                    <div className='inputEErro'>
                                         <input className={`inputEmailESenha ${errors.email ? 'bordaErroCadastro' : ''}`} placeholder='Celular ou email' type="email" {...register('email')} />
-                                        {errors.email && <span style={{ fontSize: 10, color: 'red', position: 'absolute', marginTop: 41 }}>{errors.email.message}</span>}
+                                        {errors.email && <span className='mensagemError'>{errors.email.message}</span>}
                                     </div>
-                                    <div className='inputEError'>
+                                    <div className='inputEErro'>
                                         <input className={`inputEmailESenha ${errors.senha ? 'bordaErroCadastro' : ''}`} type="text" placeholder='Nova senha' {...register('senha')} />
-                                        {errors.senha && <span style={{ fontSize: 10, color: 'red', position: 'absolute', marginTop: 40 }}>{errors.senha.message}</span>}
+                                        {errors.senha && <span className='mensagemError'>{errors.senha.message}</span>}
                                     </div>
                                 </div>
                                 <p className='textoInformativo'>As pessoas que usam nosso serviço podem ter carregado suas informações de contato no Facebook.

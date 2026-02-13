@@ -6,6 +6,7 @@ div.dadosUsuario {
     width: 366px;
     border-bottom: 1px solid #DADDE1;
     padding: 5px 0;
+    position: relative;
 }
 
 div.containerIconeEDados {

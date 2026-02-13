@@ -16,6 +16,13 @@ const PaginaRecuperarSenha = () => {
         e.preventDefault();
         setErroBusca(""); // Limpa erros antigos ao tentar de novo
 
+        // VALIDAÇÃO NO FRONT
+        if (!emailRecuperacao.trim()) {
+            setErroBusca("E-mail é obrigatório.");
+            return; // Para a execução aqui
+        }
+
+
         setIsSearching(true);
         await new Promise(resolve => setTimeout(resolve, 1500));
         try {

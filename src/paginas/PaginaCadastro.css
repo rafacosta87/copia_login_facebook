@@ -1,6 +1,7 @@
 #containerPrincipalCadastro {
     background-color: #f2f4f7;
-    width: 100vw;
+   width: 100%;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -48,16 +49,23 @@
     padding: 0 16px;
 }
 
-div.inputEError {
+div.inputEErro {
     display: flex;
     flex-direction: column;
+    position: relative;
+    line-height: 20px;
+    
 }
 
 span.mensagemError {
     position: absolute;
     color: red;
-    margin-top: 43px;
+    margin-top: 40px;
     font-size: 10px;
+}
+
+.bordaErroCadastro {
+    border-color: red !important
 }
 
 #cadastroNome {
@@ -71,22 +79,20 @@ span.mensagemError {
 }
 
 input.inputCadastroNome {
-    width: 135px;
+    width: 125px;
     padding: 11px;
-    font-size: 15px;
+    font-size: 16px;
     line-height: 16px;
     border: 1px solid #CCD0D5;
     border-radius: 5px;
     color: #1c1e21;
 }
 
-.bordaErroCadastro {
-    border-color: red !important
-}
 
 #iconeCamera {
     cursor: pointer;
-    margin-left: 12px;
+    margin-left: 20px;
+    position: relative;
 }
 
 #imagemCadastro {
@@ -96,6 +102,16 @@ input.inputCadastroNome {
     object-fit: cover;
 }
 
+.erroImagem {
+    position: absolute;
+    color: #f02849;
+    font-size: 10px;
+    bottom: -19px;
+    left: -26px;
+    white-space: nowrap;
+}
+
+
 
 #containerPrincipalData {
     margin-bottom: 4px;
@@ -104,6 +120,10 @@ input.inputCadastroNome {
     font-weight: 400;
     line-height: 20px;
     margin-top: 2px;
+}
+
+.dataEErro{
+    position: relative;
 }
 
 #containerData {
@@ -118,9 +138,7 @@ select.seletores {
     font-size: 15px;
     font-weight: 400;
     height: 36px;
-    line-height: 20px;
     width: 125px;
-    height: 36px;
     background-color: #fff;
     border: 1px solid #CCD0D5;
     padding-bottom: 2px;
@@ -129,6 +147,7 @@ select.seletores {
 #containerPrincipalGenero {
     padding-top: 10px;
     padding-bottom: 15px;
+    position: relative;
 }
 
 #tituloGenero {
@@ -172,6 +191,14 @@ label.genero {
     font-weight: 400;
 }
 
+.erroPosicionado {
+    position: absolute;
+    color: #f02849;
+    font-size: 10px;
+    margin-top: -3px;
+    left: 0;
+}
+
 input.radio {
     margin-bottom: 3px;
 }
@@ -188,7 +215,7 @@ input.radio {
     width: 375px;
     font-size: 16px;
     line-height: 16px;
-    padding: 8px 11px 14px 11px;
+    padding: 11px;
     border: 1px solid #CCD0D5;
     color: #1c1e21;
 }
@@ -216,17 +243,19 @@ a.linkDoTexto {
     height: 36px;
     min-width: 194px;
     padding: 0 32px;
-    text-align: center;
     margin-top: 10px;
     margin-bottom: 10px;
-    line-height: 126%;
     cursor: pointer;
-    display: inline-block;
     transition: background 0.2s;
 }
 
 #botaoCadastrar:hover {
     background-color: #008a00;
+}
+
+#botaoCadastrar:disabled {
+    background-color: #94d294;
+    cursor: not-allowed;
 }
 
 #containerBotaoELink {

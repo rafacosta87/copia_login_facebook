@@ -75,6 +75,7 @@ function PaginaLogin() {
                     </div>
                     <div id="containerLogin">
                         <div id="login">
+                            <div className="loginInputEErro">
                             <input
                                 type="text"
                                 className={`inputTextEmail ${errors.email ? "input-error-login" : ""}`}
@@ -107,6 +108,7 @@ function PaginaLogin() {
                             </div>
                             {errors.email && <span className="loginErros">{errors.email}</span>}
                             {errors.password && <span className="loginErros">{errors.password}</span>}
+                            </div>
                             <button
                                 className="buttonEntrar"
                                 type="submit"
