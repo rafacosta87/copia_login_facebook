@@ -5,7 +5,7 @@ import LogoCabecalho from '../components/LogoCabecalho';
 import Rodape from "../components/Rodape";
 import { CampoPerfil } from '../components/CampoPerfil';
 import './PaginaLogado.css';
-import PaginaErro from '../components/PaginaErro';
+import PaginaErro from './PaginaErro';
 
 interface Usuario {
     nome: string;
@@ -34,9 +34,13 @@ function PaginaLogado() {
     });
     const [erros, setErros] = useState<Record<string, string>>({});
 
+    useEffect(() => {
+        document.title = "Facebook";
+    }, []);
+
     const fetchData = async () => {
         // 1. Validação: se não houver ID na URL, ativa o erro fatal imediatamente
-           if (!idUsuario || idUsuario === "") {
+        if (!idUsuario || idUsuario === "") {
             setErroFatal(true);
             return;
         }
@@ -127,7 +131,7 @@ function PaginaLogado() {
         }
     };
 
-    if (erroFatal || !idUsuario || idUsuario === ""){
+    if (erroFatal || !idUsuario || idUsuario === "") {
         return (
             <PaginaErro
                 titulo="Perfil não encontrado"

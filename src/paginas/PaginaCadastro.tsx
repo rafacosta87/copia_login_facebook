@@ -1,13 +1,15 @@
-import { useRef } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useRef } from 'react'
+import { useNavigate , Link} from 'react-router-dom';
 import './PaginaCadastro.css'
 import Rodape from '../components/Rodape'
 import LogoCabecalho from '../components/LogoCabecalho'
-import { Camera } from 'lucide-react'
+import { Camera} from 'lucide-react'
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 // import axios from 'axios';
+
+
 
 interface FormValues {
     nome: string;
@@ -46,6 +48,10 @@ const getMonths = () => [
 const getYears = () => Array.from({ length: 121 }, (_, i) => (new Date().getFullYear() - i).toString())
 
 const PaginaCadastro = () => {
+    useEffect(() => {
+        document.title = "Cadastrar-se no Facebook";
+    }, []);
+
     const navigate = useNavigate();
     const inputFileRef = useRef<HTMLInputElement>(null);
     const {
@@ -165,7 +171,6 @@ const PaginaCadastro = () => {
                             </div>
                             <div id='containerPrincipalData'>
                                 <div id='tituloData'>Data de nascimento
-                                    <a id="birthday-help" href="#" title="Clique para obter mais informações" role="button"><i></i></a>
                                 </div>
                                 <div className='dataEErro'>
                                     <span id="containerData" data-type="selectors">
@@ -193,9 +198,6 @@ const PaginaCadastro = () => {
                                 </div>
                                 <div id="containerPrincipalGenero">
                                     <div id="tituloGenero">Gênero
-                                        <a title="Clique para obter mais informações" href="#" role="button">
-                                            <i > </i>
-                                        </a>
                                     </div>
                                     <div id="containerGenero" data-type="radio" data-name="gender_wrapper" aria-describedby="gender-error-message" >
                                         <span className='opcoesGenero' >
@@ -227,16 +229,16 @@ const PaginaCadastro = () => {
                                     </div>
                                 </div>
                                 <p className='textoInformativo'>As pessoas que usam nosso serviço podem ter carregado suas informações de contato no Facebook.
-                                    <a className="linkDoTexto" href="/help/637205020878504" role="link" target="_blank" >Saiba mais</a>.
+                                    <a className="linkDoTexto" href="https://www.facebook.com/help/637205020878504" role="link" target="_blank" >Saiba mais</a>.
                                 </p>
                                 <p className='textoInformativo'>Ao clicar em Cadastre-se, você concorda com nossos
-                                    <a className="linkDoTexto" href="/legal/terms/update" target="_blank">Termos</a>, <a className="linkDoTexto" href="/about/privacy/update" target="_blank">Política de Privacidade</a> e <a className="linkDoTexto" href="/policies/cookies/" target="_blank">Política de Cookies</a>. Você poderá receber notificações por SMS e cancelar isso quando quiser.</p>
+                                    <a className="linkDoTexto" href="https://www.facebook.com/legal/terms/update" target="_blank">Termos</a>, <a className="linkDoTexto" href="https://www.facebook.com/privacy/policy/?entry_point=data_policy_redirect&entry=0" target="_blank">Política de Privacidade</a> e <a className="linkDoTexto" href="https://www.facebook.com/privacy/policies/cookies/?entry_point=cookie_policy_redirect&entry=0" target="_blank">Política de Cookies</a>. Você poderá receber notificações por SMS e cancelar isso quando quiser.</p>
                                 <div id='containerBotaoELink'>
 
                                     <button id='botaoCadastrar' type="submit" disabled={isSubmitting}>
                                         {isSubmitting ? "Carregando..." : "Cadastre-se "}
                                     </button>
-                                    <a id='linkConta' href="/" aria-label="Já tem uma conta?" >Já tem uma conta?</a>
+                                    <Link id='linkConta' to="/" aria-label="Já tem uma conta?" >Já tem uma conta?</Link>
                                 </div>
                             </div>
                         </form>

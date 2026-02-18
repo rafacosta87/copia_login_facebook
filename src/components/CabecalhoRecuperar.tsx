@@ -1,6 +1,6 @@
 import { Loader2 } from "lucide-react"
 import IconeCabecalho from "./IconeCabecalho"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import { useState } from "react";
 import './CabecalhoRecuperar.css'
 
@@ -57,7 +57,9 @@ const CabecalhoRecuperar = () => {
 
     return (
         <div className="containerCabecalhoForm">
-            <div className='iconeCabecalho'>< IconeCabecalho /></div>
+            <Link to="/" className='iconeCabecalho' title="Facebook">
+                <IconeCabecalho />
+            </Link>
 
             <div className='inputsELinks'>
                 <div className='grupoInput'>

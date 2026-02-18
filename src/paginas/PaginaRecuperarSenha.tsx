@@ -1,7 +1,7 @@
 import './PaginaRecuperarSenha.css'
 import Rodape from '../components/Rodape'
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CabecalhoRecuperar from '../components/CabecalhoRecuperar';
 
 const PaginaRecuperarSenha = () => {
@@ -11,6 +11,10 @@ const PaginaRecuperarSenha = () => {
     const navigate = useNavigate();
     const [emailRecuperacao, setEmailRecuperacao] = useState("");
     const [erroBusca, setErroBusca] = useState("")
+
+    useEffect(() => {
+        document.title = "Esqueci a senha | Não consigo entrar | Facebook";
+    }, []);
 
     const handleSolicitarSenha = async (e: React.FormEvent) => {
         e.preventDefault();

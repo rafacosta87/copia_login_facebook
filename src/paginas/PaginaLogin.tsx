@@ -4,7 +4,8 @@ import { useState } from "react";
 import IconeOlho from "../components/IconeOlho";
 import IconeOlhoFechado from "../components/IconeOlhoFechado";
 import Rodape from "../components/Rodape";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+
 
 function PaginaLogin() {
     const [email, setEmail] = useState("")
@@ -76,38 +77,38 @@ function PaginaLogin() {
                     <div id="containerLogin">
                         <div id="login">
                             <div className="loginInputEErro">
-                            <input
-                                type="text"
-                                className={`inputTextEmail ${errors.email ? "input-error-login" : ""}`}
-                                name="email"
-                                id="email"
-                                placeholder="Email ou telefone"
-                                value={email}
-                                onChange={e => setEmail(e.target.value)}
-                                onKeyDown={handleKeyDown}
-                                disabled={isLoading}
-                            />
-                            <div className={`bordaInputPassword ${errors.password ? "input-error-login" : ""}`} >
                                 <input
-                                    type={mostrarSenha ? "text" : "password"}
-                                    className="inputText"
-                                    name="pass"
-                                    id="pass"
-                                    placeholder="Senha"
-                                    aria-label="Senha"
-                                    value={password}
-                                    onChange={e => setPassword(e.target.value)}
+                                    type="text"
+                                    className={`inputTextEmail ${errors.email ? "input-error-login" : ""}`}
+                                    name="email"
+                                    id="email"
+                                    placeholder="Email ou telefone"
+                                    value={email}
+                                    onChange={e => setEmail(e.target.value)}
                                     onKeyDown={handleKeyDown}
                                     disabled={isLoading}
                                 />
-                                {password != "" &&
-                                    <div id="iconeOlho" onClick={() => setMostrarSenha((prev) => !prev)}>
-                                        {mostrarSenha ? <IconeOlho /> : <IconeOlhoFechado />}
-                                    </div>
-                                }
-                            </div>
-                            {errors.email && <span className="loginErros">{errors.email}</span>}
-                            {errors.password && <span className="loginErros">{errors.password}</span>}
+                                <div className={`bordaInputPassword ${errors.password ? "input-error-login" : ""}`} >
+                                    <input
+                                        type={mostrarSenha ? "text" : "password"}
+                                        className="inputText"
+                                        name="pass"
+                                        id="pass"
+                                        placeholder="Senha"
+                                        aria-label="Senha"
+                                        value={password}
+                                        onChange={e => setPassword(e.target.value)}
+                                        onKeyDown={handleKeyDown}
+                                        disabled={isLoading}
+                                    />
+                                    {password != "" &&
+                                        <div id="iconeOlho" onClick={() => setMostrarSenha((prev) => !prev)}>
+                                            {mostrarSenha ? <IconeOlho /> : <IconeOlhoFechado />}
+                                        </div>
+                                    }
+                                </div>
+                                {errors.email && <span className="loginErros">{errors.email}</span>}
+                                {errors.password && <span className="loginErros">{errors.password}</span>}
                             </div>
                             <button
                                 className="buttonEntrar"
@@ -117,15 +118,19 @@ function PaginaLogin() {
                             >
                                 {isLoading ? "Entrando..." : "Entrar"}
                             </button>
-                            <a className="novaSenha" href="/recuperar/senha">
+                            <Link className="novaSenha" to="/recuperar/senha">
                                 Esqueceu a senha?
-                            </a>
+                            </Link>
                             <hr id="borderTopButton" />
-                            <a href="/cadastro">
-                                <button className="buttonConta" type="submit" >Criar nova conta</button>
-                            </a>
+                            <button
+                                className="buttonConta"
+                                type="button"
+                                onClick={() => navigate("/cadastro")}
+                            >
+                                Criar nova conta
+                            </button>
                         </div>
-                        <div id="msgContainer"> <a href="/pages/create/?ref_type=registration_form">Crie uma Página </a>para uma celebridade, uma marca ou uma empresa.</div>
+                        <div id="msgContainer"> <a href="https://www.facebook.com/pages/create/?ref_type=registration_form">Crie uma Página </a>para uma celebridade, uma marca ou uma empresa.</div>
                     </div>
                 </div>
             </div>

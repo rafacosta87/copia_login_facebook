@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import './PaginaRedifinirSenha.css'
+import './PaginaRedefinirSenha.css'
 import LogoCabecalho from '../components/LogoCabecalho';
 import Rodape from '../components/Rodape';
-import PaginaErro from '../components/PaginaErro';
+import PaginaErro from './PaginaErro';
 
 const PaginaRedefinirSenha = () => {
     const [searchParams] = useSearchParams();
@@ -13,6 +13,10 @@ const PaginaRedefinirSenha = () => {
     const [erro, setErro] = useState(""); // Estado para erros (vazio, < 6, etc)
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        document.title = "Redefinir senha";
+    }, []);
 
     if (!token) {
         return (
