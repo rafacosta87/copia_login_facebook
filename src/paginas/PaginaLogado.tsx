@@ -24,6 +24,10 @@ function PaginaLogado() {
     const idUsuario = searchParams.get("u");
     const inputFileRef = useRef<HTMLInputElement>(null);
     const [dadosUsuario, setDadosUsuario] = useState<Usuario | undefined>();
+
+    // CONTROLE DE EDIÇÃO ÚNICA: Armazena o 'nomeCampo' que está ativo
+    const [campoEmEdicao, setCampoEmEdicao] = useState<string | null>(null);
+
     const [formData, setFormData] = useState({
         nome: null,
         sobrenome: null,
@@ -34,31 +38,23 @@ function PaginaLogado() {
     });
     const [erros, setErros] = useState<Record<string, string>>({});
 
-    useEffect(() => {
-        document.title = "Facebook";
-    }, []);
-
     const fetchData = async () => {
-        // 1. Validação: se não houver ID na URL, ativa o erro fatal imediatamente
         if (!idUsuario || idUsuario === "") {
             setErroFatal(true);
             return;
         }
         try {
             const res = await fetch(`http://localhost:3000/usuario/${idUsuario}`);
-
-            // 2. Se o servidor responder 404 (usuário deletado ou ID inexistente)
             if (res.status === 404) {
                 setErroFatal(true);
                 return;
             }
-
             const json = await res.json();
             setDadosUsuario(json);
-            setErroFatal(false); // Garante que o erro saia se os dados voltarem
+            setErroFatal(false);
         } catch (err) {
             console.error("Erro ao carregar dados", err);
-            setErroFatal(true); // Erro de conexão ou servidor fora do ar
+            setErroFatal(true);
         }
     };
 
@@ -74,14 +70,14 @@ function PaginaLogado() {
     const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
     const atualizarDados = async (imgOverride?: string): Promise<boolean> => {
-        await delay(1500);
+        if (!imgOverride) await delay(1500);
+
         const corpoRequisicao = {
             ...dadosUsuario,
             ...formData,
-            // Se for troca de imagem, usa imgOverride, senão usa o que já tinha
             imagem: imgOverride ?? dadosUsuario?.imagem,
-            // Mapeamento específico caso o nome do campo no banco seja diferente do formData
         };
+
         try {
             const res = await fetch(`http://localhost:3000/atualizar/${idUsuario}`, {
                 method: "PUT",
@@ -91,23 +87,16 @@ function PaginaLogado() {
 
             if (!res.ok) {
                 const errorData = await res.json();
-
-                // Verifica se o array de erros existe e tem pelo menos um item
                 if (errorData.errors && errorData.errors.length > 0) {
-                    const primeiroErro = errorData.errors[0]; // Pega apenas o primeiro
-                    const novosErros: Record<string, string> = {
-                        [primeiroErro.path]: primeiroErro.message
-                    };
-                    console.log(novosErros)
-                    setErros(novosErros);
+                    const primeiroErro = errorData.errors[0];
+                    setErros({ [primeiroErro.path]: primeiroErro.message });
                 }
-
                 return false;
             }
 
             await fetchData();
             setErros({});
-
+            setCampoEmEdicao(null); // Fecha o campo após salvar com sucesso
             return true;
         } catch (error) {
             console.error("Erro na conexão", error);
@@ -131,7 +120,7 @@ function PaginaLogado() {
         }
     };
 
-    if (erroFatal || !idUsuario || idUsuario === "") {
+    if (erroFatal || !idUsuario || idUsuario === ""){
         return (
             <PaginaErro
                 titulo="Perfil não encontrado"
@@ -159,10 +148,12 @@ function PaginaLogado() {
                         titulo="Nome"
                         valorExibido={dadosUsuario?.nome}
                         nomeCampo="nome"
+                        estaEditando={campoEmEdicao === "nome"}
+                        onAbrir={() => { setCampoEmEdicao("nome"); setErros({}); }}
                         erro={erros.nome}
                         onChange={handleChange}
                         onSalvar={atualizarDados}
-                        onCancelar={() => { setFormData({ ...formData, nome: null }); setErros({}) }}
+                        onCancelar={() => { setFormData({ ...formData, nome: null }); setErros({}); setCampoEmEdicao(null); }}
                     />
 
                     <CampoPerfil
@@ -170,10 +161,12 @@ function PaginaLogado() {
                         titulo="Gênero"
                         valorExibido={dadosUsuario?.genero}
                         nomeCampo="genero"
+                        estaEditando={campoEmEdicao === "genero"}
+                        onAbrir={() => { setCampoEmEdicao("genero"); setErros({}); }}
                         erro={erros.genero}
                         onChange={handleChange}
                         onSalvar={atualizarDados}
-                        onCancelar={() => { setFormData({ ...formData, genero: null }); setErros({}) }}
+                        onCancelar={() => { setFormData({ ...formData, genero: null }); setErros({}); setCampoEmEdicao(null); }}
                     />
 
                     <CampoPerfil
@@ -181,11 +174,12 @@ function PaginaLogado() {
                         titulo="Data de nascimento"
                         valorExibido={dadosUsuario?.data_nascimento}
                         nomeCampo="data_nascimento"
-                        tipoInput="text"
+                        estaEditando={campoEmEdicao === "data_nascimento"}
+                        onAbrir={() => { setCampoEmEdicao("data_nascimento"); setErros({}); }}
                         erro={erros.data_nascimento}
                         onChange={handleChange}
                         onSalvar={atualizarDados}
-                        onCancelar={() => { setFormData({ ...formData, data_nascimento: null }); setErros({}) }}
+                        onCancelar={() => { setFormData({ ...formData, data_nascimento: null }); setErros({}); setCampoEmEdicao(null); }}
                     />
 
                     <CampoPerfil
@@ -193,11 +187,12 @@ function PaginaLogado() {
                         titulo="Email"
                         valorExibido={dadosUsuario?.email}
                         nomeCampo="email"
-                        tipoInput="email"
+                        estaEditando={campoEmEdicao === "email"}
+                        onAbrir={() => { setCampoEmEdicao("email"); setErros({}); }}
                         erro={erros.email}
                         onChange={handleChange}
                         onSalvar={atualizarDados}
-                        onCancelar={() => { setFormData({ ...formData, email: null }); setErros({}) }}
+                        onCancelar={() => { setFormData({ ...formData, email: null }); setErros({}); setCampoEmEdicao(null); }}
                     />
 
                     <CampoPerfil
@@ -205,23 +200,24 @@ function PaginaLogado() {
                         titulo="Senha"
                         valorExibido="*******"
                         nomeCampo="senha"
-                        tipoInput="text"
+                        estaEditando={campoEmEdicao === "senha"}
+                        onAbrir={() => { setCampoEmEdicao("senha"); setErros({}); }}
                         erro={erros.senha}
                         onChange={handleChange}
                         onSalvar={atualizarDados}
-                        onCancelar={() => { setFormData({ ...formData, senha: null }); setErros({}) }}
+                        onCancelar={() => { setFormData({ ...formData, senha: null }); setErros({}); setCampoEmEdicao(null); }}
                     />
 
                     <div className="dadosUsuario">
-                        <div className="containerIconeEDados" onClick={handleDelete}>
+                        <div className="containerIconeEDados" onClick={handleDelete} style={{ cursor: 'pointer' }}>
                             <div id='iconeCircleX'><UserRoundX /></div>
-                            <a id="linkSair">Deletar Conta</a>
+                            <span id="linkSair">Deletar Conta</span>
                         </div>
                     </div>
 
-                    <div id="containerSair" title='Sair'>
+                    <div id="containerSair" title='Sair' onClick={() => navigate("/")} style={{ cursor: 'pointer' }}>
                         <LogOut />
-                        <a id='linkSair' onClick={() => navigate("/")}>Sair</a>
+                        <span id='linkSair'>Sair</span>
                     </div>
                 </div>
             </div>

@@ -7,6 +7,10 @@ interface CampoPerfilProps {
     titulo: string;
     valorExibido?: string | null;
     nomeCampo: string;
+    // --- MUDANÇAS AQUI ---
+    estaEditando: boolean;  // Recebe do pai
+    onAbrir: () => void;    // Avisa o pai que quer abrir
+    // ---------------------
     tipoInput?: string;
     erro?: string;
     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -19,28 +23,28 @@ export function CampoPerfil({
     titulo,
     valorExibido,
     nomeCampo,
+    estaEditando, // Propriedade nova
+    onAbrir,      // Propriedade nova
     tipoInput = "text",
     erro,
     onChange,
     onSalvar,
     onCancelar
 }: CampoPerfilProps) {
-    const [estaEditando, setEstaEditando] = useState(false);
+    // Removemos o useState(false) de estaEditando pois ele vem via Props agora
     const [carregando, setCarregando] = useState(false);
     const [valorInputLocal, setValorInputLocal] = useState<string>("");
+
     const handleSalvar = async () => {
         setCarregando(true);
         const sucesso = await onSalvar();
         setCarregando(false);
-        if (sucesso !== false) {
-            setEstaEditando(false);
-        }
+        // Não precisamos setEstaEditando(false), o pai fará isso ao atualizar os dados
     };
 
     const handleCancelar = () => {
         onCancelar();
-        setEstaEditando(false);
-
+        // Não precisamos setEstaEditando(false), o pai fará isso no setCampoEmEdicao(null)
     };
 
     const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -51,7 +55,7 @@ export function CampoPerfil({
     const iniciarEdicao = () => {
         const valorInicial = nomeCampo === "senha" ? "" : (valorExibido ?? "");
         setValorInputLocal(valorInicial ?? "");
-        setEstaEditando(true);
+        onAbrir(); // Chama a função que vem do pai para abrir ESTE campo
     };
 
     return (
@@ -75,27 +79,29 @@ export function CampoPerfil({
                             onKeyDown={handleKeyDown}
                         />
                         {valorInputLocal && (
-
                             <div
                                 className="containerLinksAtualizacao"
                                 onClick={handleSalvar}
                                 title="Confirmar"
                             >
-                                {carregando ? <div className="iconeLapis"> <Loader2 className="animate-spin" /> </div> : <div className="iconeLapis"> <Check /> </div>}
+                                {carregando ? (
+                                    <div className="iconeLapis"> <Loader2 className="animate-spin" /> </div>
+                                ) : (
+                                    <div className="iconeLapis"> <Check /> </div>
+                                )}
                             </div>
-
-                        )}                            <div
+                        )}
+                        <div
                             className="iconeLapis"
                             onClick={handleCancelar}
                             title="Cancelar"
                         >
                             <X />
                         </div>
-
                     </div>
                 ) : (
                     <div className='containerAtualizarDados'>
-                      <p className="dados" >{valorExibido}</p>  
+                        <p className="dados" >{valorExibido || "Não informado"}</p>  
                         <div
                             className="iconeLapis"
                             title={`Alterar ${titulo.toLowerCase()}`}
