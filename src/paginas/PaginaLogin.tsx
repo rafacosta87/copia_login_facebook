@@ -1,4 +1,4 @@
-//passar todas as palavras para portugues ou ingles para manter um padrão
+
 import "./PaginaLogin.css";
 import { useState } from "react";
 import IconeOlho from "../components/IconeOlho";

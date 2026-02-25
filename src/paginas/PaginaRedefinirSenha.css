@@ -19,7 +19,6 @@
 }
 
 .botaoRedefinirForm {
-  /* padding: 0 20px; */
   padding-bottom: 0;
   padding-top: 0;
   width: 160px;
@@ -57,7 +56,6 @@
   max-width: 468px;
   color: #1c1e21;
   position: relative;
-  /*mexemos nessa linha*/
   padding-bottom: 25px;
 }
 
@@ -66,12 +64,10 @@
   font-size: 13px;
   position: absolute;
   bottom: 0;
-  /* Cola no fundo do containerConteudoForm */
   left: 5px;
   white-space: nowrap;
 }
 
-/* Melhoria: Estilo de carregamento no botão */
 .botaoRedefinirForm:disabled {
   background-color: #8cb4f5;
   cursor: not-allowed;

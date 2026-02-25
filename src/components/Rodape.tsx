@@ -8,7 +8,7 @@ import { idiomasRodape } from "./DadosIdiomas.tsx"
 function Rodape() {
     const contexto = useContext(IdiomaContexto)
     const [openModal, setOpenModal] = useState(false)
-    const idiomaSelecionado = contexto?.idiomaSelecionado                           //esse "?" é pq a variavel pode ser undefined
+    const idiomaSelecionado = contexto?.idiomaSelecionado                          
     const setIdiomaSelecionado = contexto?.setIdiomaSelecionado
     const anoAtual = new Date().getFullYear();
 

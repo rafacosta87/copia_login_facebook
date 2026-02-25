@@ -1,7 +1,4 @@
-/*Função 594 a 512 primeira parte ele esta mapeando length 4 , onde esse id que esta em map , ira contar de 0 a 3 , esse id sera passado na linha 500, onde idiomas.slice pegara id(0) idiomas.length dividido por 4 até id(1) idiomas.length dividido por 4. Ai depois repete a operação, id(1) idiomas.length dividido por 4 até id(2) idiomas.length dividido por 4. Array.from fara esse loop até chegar em length: 4(l 496) ou seja id= 3, fatiando o array em quatro colunas iguais, essas colunas serão impressas no return(l 504)*/
-/*Função useMemo, o uso do include é pq cateforia é um array, caso contrario não precisaria */
-/*Pergunta na linha 518 . Perguntar a questão do margin-rigth na tag span. Tem pergunta no arquivo idiomaContexto.Se vai fazer o loading ao abrir o modal  */
-/* Vai implatar mais tipagens no projeto. Passar esses array de idiomas e cateorias para um arquivo . Passar focu para div password*/
+
 
 import { createPortal } from "react-dom"
 import "./Modal.css"
@@ -16,16 +13,10 @@ type ModalProps = {
 
 function Modal({ onClose }: ModalProps) {
     const contexto = useContext(IdiomaContexto)
-    const idiomaSelecionado = contexto?.idiomaSelecionado                                                                                      //esse "?" é pq a variavel pode ser undefined
+    const idiomaSelecionado = contexto?.idiomaSelecionado
     const setIdiomaSelecionado = contexto?.setIdiomaSelecionado
     const [carregando, setCarregando] = useState(true)
     const [categoriaSelecionada, setCategoriaSelecionada] = useState("Todos os idiomas")
-
-    // const [idiomasFiltrados, setIdiomasFiltrados] = useState([])
-    // useEffect(() => {
-    //  const selecao = idiomas.filter((idioma) => categoriaSelecionada == "Todos os idiomas" || idioma.categoria.includes(categoriaSelecionada))
-    //  setIdiomasFiltrados(selecao)
-    // },[categoriaSelecionada])
 
     const idiomasFiltrados = useMemo(() => {
         return idiomas.filter((idioma) => categoriaSelecionada == "Todos os idiomas" || idioma.categoria.includes(categoriaSelecionada))
@@ -34,7 +25,6 @@ function Modal({ onClose }: ModalProps) {
 
       useEffect(() => {
         const timeout = setTimeout(() => setCarregando(false), 1500);
-        // Fecha ao apertar ESC
         const handleEsc = (e: KeyboardEvent) => e.key === "Escape" && onClose();
         window.addEventListener("keydown", handleEsc);
 
@@ -66,13 +56,13 @@ function Modal({ onClose }: ModalProps) {
                                         <div id={idiomaSelecionado == idioma ? "idiomaSugeridoSelecionado" : ""} className="idiomaSugerido" key={idx}
                                             onClick={
                                                 () => {
-                                                    if (setIdiomaSelecionado)                                                                       /*Aqui ś o equivalente, se setIdiomaSeeleciona receber valor executa o código abaixo, que é passar o valor para idiomaSelecionado. Em quais situações ele sera undefined? */
+                                                    if (setIdiomaSelecionado)
                                                         setIdiomaSelecionado(idioma)
                                                 }
                                             }
                                         >
                                             {idioma}
-                                            {idioma == idiomaSelecionado && <b id="checkIdiomaSelecionado"> ✓ </b>}                                 {/*passara esse icone para o idioma selecionado */}
+                                            {idioma == idiomaSelecionado && <b id="checkIdiomaSelecionado"> ✓ </b>}
                                         </div>
                                     )}
                                 </div>
@@ -86,7 +76,7 @@ function Modal({ onClose }: ModalProps) {
                                                     <a
                                                         onClick={
                                                             (e) => {
-                                                                e.preventDefault()                                                                  /*é para evitar o evento padrão, por ser uma tag a , ao click ela atualiza pagina, e não queremos isso  */
+                                                                e.preventDefault()
                                                                 setCategoriaSelecionada(categoria)
                                                             }
                                                         }
@@ -134,7 +124,7 @@ function Modal({ onClose }: ModalProps) {
                                                                     })
                                                             }
                                                             {
-                                                                (idiomasFiltrados.length % 4 != 0 && id == 3) && <li>                                                   {/*Aqui é o seguinte caso a ultima coluna(coluna 4 que o id é 3) não tiver a mesma quantidade de idiomas que as outras , adicionara um caractere invisivel para deixar essa coluna alinhada ao topo igualmente as outras, se não fizer isso, ela ficara uma linha a baixo. A logica é a seguinte, são 4 colunas, se o numero de idiomas não for divisel po 4 , o resto sera diferente de zero na ultima coluna, ai adicionara um caractere invisivel nesta coluna*/}
+                                                                (idiomasFiltrados.length % 4 != 0 && id == 3) && <li>
                                                                     <a href="" className="listaPaises">
                                                                         &#65279;
                                                                     </a>
@@ -147,60 +137,6 @@ function Modal({ onClose }: ModalProps) {
                                             })
                                         }
                                     </tr>
-                                    {/* <tr className="containerColunas">
-                                    <td className="colunaTabela">
-
-                                        <ul className="dadosTabela">
-                                            {
-                                                idiomas.slice(0, idiomas.length / 4).map((idioma, idx) => {
-
-                                                    return (
-                                                        <li><div><a className="listaPaises" href="#" role="button"   >{idioma.nome}</a></div></li>
-                                                    )
-                                                })
-                                            }
-                                        </ul>
-                                    </td>
-                                    <td className="colunaTabela">
-
-                                        <ul className="dadosTabela">
-                                            {
-                                                idiomas.slice(idiomas.length / 4, idiomas.length / 2).map((idioma, idx) => {
-
-                                                    return (
-                                                        <li><div><a className="listaPaises" href="#" role="button"   >{idioma.nome}</a></div></li>
-                                                    )
-                                                })
-                                            }
-                                        </ul>
-                                    </td>
-                                    <td className="colunaTabela">
-
-                                        <ul className="dadosTabela">
-                                            {
-                                                idiomas.slice(idiomas.length * 2 / 4, idiomas.length * 3 / 4).map((idioma, idx) => {        
-
-                                                    return (
-                                                        <li><div><a className="listaPaises" href="#" role="button"   >{idioma.nome}</a></div></li>
-                                                    )
-                                                })
-                                            }
-                                        </ul>
-                                    </td>
-                                    <td className="colunaTabela">
-
-                                        <ul className="dadosTabela">
-                                            {
-                                                idiomas.slice(idiomas.length * 3 / 4, idiomas.length).map((idioma, idx) => {
-
-                                                    return (
-                                                        <li><div><a className="listaPaises" href="#" role="button"   >{idioma.nome}</a></div></li>
-                                                    )
-                                                })
-                                            }
-                                        </ul>
-                                    </td>
-                                </tr> */}
                                 </table>
                             </div>
                         </div>

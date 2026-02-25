@@ -25,7 +25,6 @@ function PaginaLogado() {
     const inputFileRef = useRef<HTMLInputElement>(null);
     const [dadosUsuario, setDadosUsuario] = useState<Usuario | undefined>();
 
-    // CONTROLE DE EDIÇÃO ÚNICA: Armazena o 'nomeCampo' que está ativo
     const [campoEmEdicao, setCampoEmEdicao] = useState<string | null>(null);
 
     const [formData, setFormData] = useState({
@@ -96,7 +95,7 @@ function PaginaLogado() {
 
             await fetchData();
             setErros({});
-            setCampoEmEdicao(null); // Fecha o campo após salvar com sucesso
+            setCampoEmEdicao(null);
             return true;
         } catch (error) {
             console.error("Erro na conexão", error);

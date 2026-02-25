@@ -37,7 +37,7 @@ export function CampoPerfil({
 
     const handleSalvar = async () => {
         setCarregando(true);
-        const sucesso = await onSalvar();
+        await onSalvar();
         setCarregando(false);
         // Não precisamos setEstaEditando(false), o pai fará isso ao atualizar os dados
     };
@@ -101,7 +101,7 @@ export function CampoPerfil({
                     </div>
                 ) : (
                     <div className='containerAtualizarDados'>
-                        <p className="dados" >{valorExibido || "Não informado"}</p>  
+                        <p className="dados" >{valorExibido || "Não informado"}</p>
                         <div
                             className="iconeLapis"
                             title={`Alterar ${titulo.toLowerCase()}`}
