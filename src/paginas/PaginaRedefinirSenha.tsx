@@ -4,6 +4,7 @@ import './PaginaRedefinirSenha.css'
 import LogoCabecalho from '../components/LogoCabecalho';
 import Rodape from '../components/Rodape';
 import PaginaErro from './PaginaErro';
+import { API_URL } from '../utils/config.ts';
 
 const PaginaRedefinirSenha = () => {
     const [searchParams] = useSearchParams();
@@ -45,7 +46,7 @@ const PaginaRedefinirSenha = () => {
                 setErro("As senhas não coincidem.");
                 return;
             }
-            const response = await fetch("http://localhost:3000/redefinir-senha", {
+            const response = await fetch(`${API_URL}/redefinir-senha`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ token, novaSenha }),

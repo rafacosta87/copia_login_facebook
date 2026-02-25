@@ -7,6 +7,7 @@ import { Camera} from 'lucide-react'
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { API_URL } from '../utils/config.ts';
 // import axios from 'axios';
 
 
@@ -89,7 +90,7 @@ const PaginaCadastro = () => {
             data_nascimento: `${data.diaNascimento}/${data.mesNascimento}/${data.anoNascimento}`
         };
         try {
-            const response = await fetch('http://localhost:3000/usuario', {
+            const response = await fetch(`${API_URL}/usuario`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(postData),

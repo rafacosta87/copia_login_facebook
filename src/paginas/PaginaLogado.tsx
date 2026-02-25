@@ -6,6 +6,7 @@ import Rodape from "../components/Rodape";
 import { CampoPerfil } from '../components/CampoPerfil';
 import './PaginaLogado.css';
 import PaginaErro from './PaginaErro';
+import { API_URL } from '../utils/config.ts';
 
 interface Usuario {
     nome: string;
@@ -43,7 +44,7 @@ function PaginaLogado() {
             return;
         }
         try {
-            const res = await fetch(`http://localhost:3000/usuario/${idUsuario}`);
+            const res = await fetch(`${API_URL}/usuario/${idUsuario}`);
             if (res.status === 404) {
                 setErroFatal(true);
                 return;
@@ -78,7 +79,7 @@ function PaginaLogado() {
         };
 
         try {
-            const res = await fetch(`http://localhost:3000/atualizar/${idUsuario}`, {
+            const res = await fetch(`${API_URL}/atualizar/${idUsuario}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(corpoRequisicao)
@@ -114,7 +115,7 @@ function PaginaLogado() {
 
     const handleDelete = async () => {
         if (window.confirm("Tem certeza que deseja excluir a conta?")) {
-            await fetch(`http://localhost:3000/usuario/${idUsuario}`, { method: "DELETE" });
+            await fetch(`${API_URL}/usuario/${idUsuario}`, { method: "DELETE" });
             navigate("/");
         }
     };

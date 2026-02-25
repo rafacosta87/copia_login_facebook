@@ -5,6 +5,7 @@ import IconeOlho from "../components/IconeOlho";
 import IconeOlhoFechado from "../components/IconeOlhoFechado";
 import Rodape from "../components/Rodape";
 import { useNavigate, Link } from "react-router-dom";
+import { API_URL } from "../utils/config.ts";
 
 
 function PaginaLogin() {
@@ -29,7 +30,7 @@ function PaginaLogin() {
         setIsLoading(true);
         await new Promise(resolve => setTimeout(resolve, 1500));
         try {
-            const response = await fetch("http://localhost:3000/login", {
+            const response = await fetch(`${API_URL}/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, senha: password }),

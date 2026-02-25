@@ -3,6 +3,7 @@ import Rodape from '../components/Rodape'
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import CabecalhoRecuperar from '../components/CabecalhoRecuperar';
+import { API_URL } from '../utils/config.ts';
 
 const PaginaRecuperarSenha = () => {
 
@@ -30,7 +31,7 @@ const PaginaRecuperarSenha = () => {
         setIsSearching(true);
         await new Promise(resolve => setTimeout(resolve, 1500));
         try {
-            const response = await fetch("http://localhost:3000/esqueceu-senha", {
+            const response = await fetch(`${API_URL}/esqueceu-senha`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email: emailRecuperacao }),

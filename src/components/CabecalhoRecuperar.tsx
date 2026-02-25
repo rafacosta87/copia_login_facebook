@@ -3,6 +3,7 @@ import IconeCabecalho from "./IconeCabecalho"
 import { useNavigate, Link } from "react-router-dom"
 import { useState } from "react";
 import './CabecalhoRecuperar.css'
+import { API_URL } from "../utils/config.ts";
 
 const CabecalhoRecuperar = () => {
     const [email, setEmail] = useState("")
@@ -22,7 +23,7 @@ const CabecalhoRecuperar = () => {
         setIsLoading(true);
         await new Promise(resolve => setTimeout(resolve, 1500));
         try {
-            const response = await fetch("http://localhost:3000/login", {
+            const response = await fetch(`${API_URL}/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, senha: password }),
