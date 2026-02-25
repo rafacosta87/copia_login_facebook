@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react'
-import { useNavigate , Link} from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './PaginaCadastro.css'
 import Rodape from '../components/Rodape'
 import LogoCabecalho from '../components/LogoCabecalho'
-import { Camera} from 'lucide-react'
+import { Camera } from 'lucide-react'
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -80,6 +80,8 @@ const PaginaCadastro = () => {
         // Ativa o delay de 2 segundos
         await delay(1500);
         // Formata a data para dd/mm/aaaa conforme esperado pelo backend
+        // Garante que dia e mês tenham 2 dígitos (ex: 01/05/2000)
+
         const postData = {
             nome: data.nome,
             sobrenome: data.sobrenome,
@@ -102,8 +104,7 @@ const PaginaCadastro = () => {
                 if (errorData.errors && errorData.errors.length > 0) {
                     const erroAPI = errorData.errors[0];
                     // Se o erro for na data, mapeamos para o campo de ano no front
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    const fieldMapping: any = erroAPI.path === 'data_nascimento' ? 'anoNascimento' : erroAPI.path;
+                    const fieldMapping = erroAPI.path === 'data_nascimento' ? 'anoNascimento' : erroAPI.path as keyof FormValues;
 
                     setError(fieldMapping, {
                         type: 'manual',

@@ -115,12 +115,24 @@ function PaginaLogado() {
 
     const handleDelete = async () => {
         if (window.confirm("Tem certeza que deseja excluir a conta?")) {
-            await fetch(`${API_URL}/usuario/${idUsuario}`, { method: "DELETE" });
-            navigate("/");
+
+            try {
+                const response = await fetch(`${API_URL}/usuario/${idUsuario}`, { method: "DELETE" });
+                if (response.ok) {
+                    navigate("/");
+                } else {
+
+                    alert("Não foi possível excluir a conta. Tente novamente.");
+                }
+            } catch (error) {
+
+                console.error("Erro ao excluir", error);
+                alert("Erro de conexão ao tentar excluir a conta.");
+            }
         }
     };
 
-    if (erroFatal || !idUsuario || idUsuario === ""){
+    if (erroFatal || !idUsuario || idUsuario === "") {
         return (
             <PaginaErro
                 titulo="Perfil não encontrado"
